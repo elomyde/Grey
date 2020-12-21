@@ -1,6 +1,3 @@
-#790571552345030686 : clientID
-#54f7018edd24ace617ea79fdb531f46e33d4f553f778332dde1d302156275301 : public key
-
 #await ctx.send(text) : 텍스트 보내기
 #await ctx.message.delete : 방금 보낸 텍스트 삭제
 #bot.command 뒤에 (pass_context = True, aliases =[]) 으로 여러개의 명령어가 같은 역할 수행하게 할 수 있음
