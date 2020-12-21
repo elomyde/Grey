@@ -4,8 +4,10 @@
 #await ctx.send(text) : 텍스트 보내기
 #await ctx.message.delete : 방금 보낸 텍스트 삭제
 #bot.command 뒤에 (pass_context = True, aliases =[]) 으로 여러개의 명령어가 같은 역할 수행하게 할 수 있음
+
 import discord
 from discord.ext import commands
+import os
 
 bot = commands.Bot(command_prefix='=')
 client = discord.Client()
@@ -30,5 +32,5 @@ async def on_ready():
     print('connection was succesful')
     await bot.change_presence(status=discord.Status.online, activity=None)
 
-bot.run('NzkwNTcxNTUyMzQ1MDMwNjg2.X-CjIg.XyX9vhxMJ3aOv3R_uVEoru4UxIM')
+bot.run(os.environ['token'])
 
