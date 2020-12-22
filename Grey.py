@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #await ctx.send(text) : 텍스트 보내기
 #await ctx.message.delete : 방금 보낸 텍스트 삭제
 #bot.command 뒤에 (pass_context = True, aliases =[]) 으로 여러개의 명령어가 같은 역할 수행하게 할 수 있음
@@ -78,4 +77,3 @@ async def on_ready():
 
 
 bot.run(os.environ['token'])
-
