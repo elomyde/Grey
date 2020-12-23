@@ -2,41 +2,66 @@
 #await ctx.message.delete : 방금 보낸 텍스트 삭제
 #bot.command 뒤에 (pass_context = True, aliases =[]) 으로 여러개의 명령어가 같은 역할 수행하게 할 수 있음
 
+#Basics
 import random
+
+#Word tokenizers
+import nltk
+from nltk.tokenize import TreebankWordTokenizer
+from nltk.tokenize import sent_tokenize
+
+#Discord APIs
 import discord
 from discord.ext import commands
 from discord.ext import tasks
+
+#To get token from Heroku
 import os
 
+#Word tokenizers
+nltk.download('punkt')
+tokenizer = TreebankWordTokenizer()
+
+#Discord APIs
 bot = commands.Bot(command_prefix='=')
 client = discord.Client()
 
+#Answers
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
 
 def grey_death_checker(message) :
-    content = message.content.lower()
-    contents = content.split()
-    isGreyIn = False
-    isDeathIn = False
-    isNotIn = False
+    #tokenize sentences
+    raw_words = message.content.lower()
+    sentences = sent_tokenize(raw_words)
+    sentenceFlag = False
 
-    for words in contents :
-        if ('grey' in words or 'gray' in words) :
-            isGreyIn = True
-        
-        if ('dead' in words or 'die' in words) :
-            isDeathIn = True
-        
-        if ('alive' in words) :
-            isDeathIn = True
-            isNotIn = not isNotIn
-        
-        if ('not' in words or "n\'t" in words):
-            if words == "notn\'t" :
+    #for every sentence, check if the sentece has the meaning 'grey is dead'
+    for sentence in sentences:
+        sentence = sentence.lower()
+        token_words = tokenizer.tokenize(sentence)
+        greyFlag = False
+        deathFlag = False
+        notFlag = False
+        for word in token_words :
+            if (('grey' in word) or ('gray' in word)) :
+                greyFlag = True
                 continue
-            isNotIn = not isNotIn
+
+            if (('dead' in word) or ('die' in word) or ('gone' in word)) :
+                deathFlag = True
+                continue
+            
+            if ('alive' in word) :
+                deathFlag = True
+                notFlag = not notFlag
+                continue
+
+            if word == 'no' or word == 'not' or word =='n\'t' :
+                notFlag = not notFlag
+                continue
+        sentenceFlag = sentenceFlag or (greyFlag and deathFlag and not notFlag)
     
-    return isGreyIn and isDeathIn and not isNotIn
+    return sentenceFlag
 
 @bot.command()
 async def test(ctx, text):
