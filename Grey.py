@@ -30,6 +30,13 @@ client = discord.Client()
 #Answers
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
 
+def grey_love_checker(message) :
+    raw_words = message.content.lower()
+    if "i love grey" in message or "i love gray" in message :
+        return True
+    else :
+        return False
+
 def grey_death_checker(message) :
     #tokenize sentences
     raw_words = message.content.lower()
@@ -75,7 +82,7 @@ async def mines(ctx, mapsizeX, mapsizeY, bombnum, aliases = ['mine', 'ms']) :
         await ctx.send("Please input proper numbers please!")
         return
     
-    if ((mapsizeX < 3 or mapsizeY < 3) or (mapsizeX > 20 or mapsizeY > 20) or bombnum > mapsizeX*mapsizeY - 2) :
+    if ((mapsizeX < 3 or mapsizeY < 3) or (mapsizeX > 12 or mapsizeY > 12) or (bombnum > (mapsizeX*mapsizeY - 2)) or mapsizeX*mapsizeY > 120) :
         await ctx.send("Please input proper numbers please!")
         return
 
@@ -125,6 +132,9 @@ async def on_message(message):
         i = random.randint(0, len(NoU)-1)
         await message.channel.send(NoU[i])
     await bot.process_commands(message)
+
+    if grey_love_checker(message) :
+        await message.add_reaction('<:greysmile:742805250469265409>')
 
 @bot.event
 async def on_ready():
