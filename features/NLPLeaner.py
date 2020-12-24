@@ -4,7 +4,10 @@ Tokenization : Penn Treebank Tokenization
 Grey bot에서는 Penn Treebank 에 의거한 토큰화를 실행함.
 """
 import nltk
-nltk.download('averaged_perceptron_tagger')
+#nltk.download('averaged_perceptron_tagger')
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
 
 
 #Treebank tokenization을 위한 library

@@ -4,6 +4,7 @@
 
 #Basics
 import random
+from features import minesweeper
 
 #Word tokenizers
 import nltk
@@ -64,8 +65,40 @@ def grey_death_checker(message) :
     return sentenceFlag
 
 @bot.command()
-async def test(ctx, text):
-    if (not text.startswith("@")) or (not text.startswith("\\")):
+async def mines(ctx, mapsizeX, mapsizeY, bombnum, aliases = ['mine', 'ms']) :
+    NUMBERS = [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:"]
+    try:
+        mapsizeX = int(mapsizeX)
+        mapsizeY = int(mapsizeY)
+        bombnum = int (bombnum)
+    except :
+        await ctx.send("Please input proper numbers please!")
+        return
+    
+    if ((mapsizeX < 3 or mapsizeY < 3) or (mapsizeX > 20 or mapsizeY > 20) or bombnum > mapsizeX*mapsizeY - 2) :
+        await ctx.send("Please input proper numbers please!")
+        return
+
+    mine = minesweeper.assembleMap(mapsizeX, mapsizeY, bombnum)
+
+    context = ""
+    for lines in mine :
+        for j in lines :
+            if j == 'bomb' :
+                context += "||:bomb:||"
+            else :
+                context += "||" + NUMBERS[j] + "||"
+        context += "\n"
+    context += " "
+    await ctx.send(context)
+
+@bot.command()
+async def echo(ctx):
+    mention = ctx.message.mentions
+    role_mention = ctx.message.role_mentions
+    print(mention, role_mention)
+    text = ctx.message.content[5:]
+    if (not ("id" in mention or "id" in role_mention or "@here" in text)) :
         await ctx.send(text)
 
 @bot.command(pass_context = True , aliases=['UwU'])
@@ -84,13 +117,11 @@ async def ping(ctx):
 
 @bot.event
 async def on_message(message):
-    print("activated onmessage")
     #check the message is not from itself
     if message.author == bot.user:
         return
     
     if grey_death_checker(message) :
-        print("activated process")
         i = random.randint(0, len(NoU)-1)
         await message.channel.send(NoU[i])
     await bot.process_commands(message)
@@ -100,6 +131,5 @@ async def on_ready():
     print('logging in')
     print('connection was succesful')
     await bot.change_presence(status=discord.Status.online, activity=None)
-
 
 bot.run(os.environ['token'])
