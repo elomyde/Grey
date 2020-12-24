@@ -29,10 +29,11 @@ client = discord.Client()
 
 #Answers
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
+avilable_greymoji = ["<:E_Grey1:789817319760330794>", "<:greyUwU:790553515663163413>", "<:E_Grey3:789817320204664862>"]
 
 def grey_love_checker(message) :
     raw_words = message.content.lower()
-    if "i love grey" in message or "i love gray" in message :
+    if "i love grey" in raw_words or "i love gray" in raw_words :
         return True
     else :
         return False
@@ -134,7 +135,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
     if grey_love_checker(message) :
-        await message.add_reaction('<:greysmile:742805250469265409>')
+        await message.add_reaction(avilable_greymoji[random.randint(0,len(avilable_greymoji))])
 
 @bot.event
 async def on_ready():
