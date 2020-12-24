@@ -51,7 +51,7 @@ def grey_death_checker(message) :
                 deathFlag = True
                 continue
             
-            if ('alive' in word) :
+            if ('alive' in word or 'sentien' in word) :
                 deathFlag = True
                 notFlag = not notFlag
                 continue
@@ -65,7 +65,8 @@ def grey_death_checker(message) :
 
 @bot.command()
 async def test(ctx, text):
-    await ctx.send(text)
+    if (not text.startswith("@")) or (not text.startswith("\\")):
+        await ctx.send(text)
 
 @bot.command(pass_context = True , aliases=['UwU'])
 async def uwu(ctx):
