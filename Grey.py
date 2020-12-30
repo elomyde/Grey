@@ -165,11 +165,15 @@ async def on_message(message):
             for role in message.author.roles :
                 #Patpat role check
                 if role.id == 765347466169024512 :
-                    await message.add_reaction('<a:greypat:793768136859713546>')
+                    try:
+                        await message.add_reaction('<a:greypat:793768136859713546>')
+                    except :
+                        pass
                     break
                 else :
                     pass
         else :
+            print("not in zz")
             await message.add_reaction('<a:greypat:793768136859713546>')
 
 @bot.event
