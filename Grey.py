@@ -157,6 +157,12 @@ async def on_message(message):
     #Reply to "I love grey"
     if grey_love_checker(message) :
         await message.add_reaction(avilable_greymoji[random.randint(0,len(avilable_greymoji))])
+        
+    #catmaid test
+    if message.author.id == 394724520872771585 :
+        msg = message.content
+        if ("cat" in msg and "maid" in msg) :
+            await message.channel.send("Soldier is a cat maid! <:greysmile:742805250469265409>")
     
     #soldier catmaid meme
     if message.author.id == 314358105205112834 :
