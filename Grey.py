@@ -103,20 +103,21 @@ async def mines(ctx, mapsizeX, mapsizeY, bombnum, aliases = ['mine', 'ms']) :
 async def echo(ctx):
     mention = ctx.message.mentions
     role_mention = ctx.message.role_mentions
-    print(mention, role_mention)
     text = ctx.message.content[5:]
     if (not ("id" in mention or "id" in role_mention or "@here" in text)) :
         await ctx.send(text)
 
 @bot.command(pass_context = True , aliases=['UwU'])
 async def uwu(ctx):
-    await ctx.message.delete()
     await ctx.send("<:greyUwU:790553515663163413>")
+    await ctx.message.delete()
+    
 
 @bot.command(pass_context = True , aliases=['greypat', 'gpp', 'gp', 'GPP', 'GP'])
 async def greypatpat(ctx):
-    await ctx.message.delete()
     await ctx.send("<a:greypat:793768136859713546>")
+    await ctx.message.delete()
+    
 
 @bot.command()
 async def ping(ctx):
@@ -143,20 +144,33 @@ async def invite(ctx):
 
 @bot.event
 async def on_message(message):
-    #check the message is not from itself
+    #Check the message is not from itself
     if message.author == bot.user:
         return
     
+    #Reply to "Grey is dead"
     if grey_death_checker(message) :
         i = random.randint(0, len(NoU)-1)
         await message.channel.send(NoU[i])
     await bot.process_commands(message)
 
+    #Reply to "I love grey"
     if grey_love_checker(message) :
         await message.add_reaction(avilable_greymoji[random.randint(0,len(avilable_greymoji))])
     
+    #Grey patpat feature
     if "patpat" in message.content.lower() or "greypat" in message.content.lower() :
-        await message.add_reaction('<a:greypat:793768136859713546>')
+        #Check if the message is from ZZ server
+        if message.guild.id == 603246092402032670 :
+            for role in message.author.roles :
+                #Patpat role check
+                if role.id == 765347466169024512 :
+                    await message.add_reaction('<a:greypat:793768136859713546>')
+                    break
+                else :
+                    pass
+        else :
+            await message.add_reaction('<a:greypat:793768136859713546>')
 
 @bot.event
 async def on_ready():
