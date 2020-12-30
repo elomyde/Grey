@@ -158,6 +158,12 @@ async def on_message(message):
     if grey_love_checker(message) :
         await message.add_reaction(avilable_greymoji[random.randint(0,len(avilable_greymoji))])
     
+    #soldier catmaid meme
+    if message.author.id == 314358105205112834 :
+        msg = message.content
+        if ("cat" in msg and "maid" in msg) :
+            await message.channel.send("Soldier is a cat maid! <:greysmile:742805250469265409>")
+    
     #Grey patpat feature
     if "patpat" in message.content.lower() or "greypat" in message.content.lower() :
         #Check if the message is from ZZ server
