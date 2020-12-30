@@ -117,7 +117,7 @@ async def uwu(ctx):
 @bot.command(pass_context = True , aliases=['greypat', 'gpp', 'gp', 'GPP', 'GP'])
 async def greypatpat(ctx):
     await ctx.message.delete()
-    await ctx.send("<a:patpat:790589898724868097>")
+    await ctx.send("<a:greypat:793768136859713546>")
 
 @bot.command()
 async def ping(ctx):
@@ -136,6 +136,9 @@ async def on_message(message):
 
     if grey_love_checker(message) :
         await message.add_reaction(avilable_greymoji[random.randint(0,len(avilable_greymoji))])
+    
+    if patpat in message.content.lower() :
+        await message.add_reaction(<a:greypat:793768136859713546>)
 
 @bot.event
 async def on_ready():
