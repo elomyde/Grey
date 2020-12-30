@@ -137,8 +137,8 @@ async def on_message(message):
     if grey_love_checker(message) :
         await message.add_reaction(avilable_greymoji[random.randint(0,len(avilable_greymoji))])
     
-    if patpat in message.content.lower() :
-        await message.add_reaction(<a:greypat:793768136859713546>)
+    if "patpat" in message.content.lower() or "greypat" in message.content.lower() :
+        await message.add_reaction('<a:greypat:793768136859713546>')
 
 @bot.event
 async def on_ready():
