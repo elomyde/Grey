@@ -1,6 +1,4 @@
-#await ctx.send(text) : 텍스트 보내기
-#await ctx.message.delete : 방금 보낸 텍스트 삭제
-#bot.command 뒤에 (pass_context = True, aliases =[]) 으로 여러개의 명령어가 같은 역할 수행하게 할 수 있음
+#3537984 : perm int
 
 #Basics
 import random
@@ -26,6 +24,7 @@ tokenizer = TreebankWordTokenizer()
 #Discord APIs
 bot = commands.Bot(command_prefix='=')
 client = discord.Client()
+bot.remove_command('help')
 
 #Answers
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
@@ -122,6 +121,25 @@ async def greypatpat(ctx):
 @bot.command()
 async def ping(ctx):
     await ctx.send("pong! {0}ms".format(round(bot.latency, 1)))
+
+@bot.command()
+async def help(ctx):
+    embed = discord.Embed(color = discord.Color.red())
+    embed.set_author(name='Help')
+    embed.add_field(name = '=mines x y z', value = "Make minesweeper, by size of x * y, with z mines.", inline = False)
+    embed.add_field(name = '=echo', value = "Grey will echo your voice!", inline = False)
+    embed.add_field(name = '=uwu', value = "UwU", inline = False)
+    embed.add_field(name = '=greypatpat, =gpp, =gp', value = "Grey will patpat to you!", inline = False)
+    embed.add_field(name = '=ping', value = "Pong!", inline = False)
+    embed.add_field(name = '=invite', value = "Make a invitation for your server.", inline = False)
+    await ctx.send(embed = embed)
+
+@bot.command()
+async def invite(ctx):
+    embed = discord.Embed(color = discord.Color.orange())
+    embed.add_field(name = 'Invitation', value = "Click [Here](https://discord.com/oauth2/authorize?client_id=790571552345030686&scope=bot&permissions=3537984) to make Grey join your server!")
+
+    await ctx.send(embed = embed)
 
 @bot.event
 async def on_message(message):
