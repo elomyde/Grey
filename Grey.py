@@ -29,7 +29,7 @@ bot.remove_command('help')
 #Answers
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
 avilable_greymoji = ["<:E_Grey1:789817319760330794>", "<:greyUwU:790553515663163413>", "<:E_Grey3:789817320204664862>"]
-
+SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
 def grey_love_checker(message) :
     raw_words = message.content.lower()
     if "i love grey" in raw_words or "i love gray" in raw_words :
@@ -112,13 +112,11 @@ async def uwu(ctx):
     await ctx.send("<:greyUwU:790553515663163413>")
     await ctx.message.delete()
     
-
 @bot.command(pass_context = True , aliases=['greypat', 'gpp', 'gp', 'GPP', 'GP'])
 async def greypatpat(ctx):
     await ctx.send("<a:greypat:793768136859713546>")
     await ctx.message.delete()
     
-
 @bot.command()
 async def ping(ctx):
     await ctx.send("pong! {0}ms".format(round(bot.latency, 1)))
@@ -157,19 +155,22 @@ async def on_message(message):
     #Reply to "I love grey"
     if grey_love_checker(message) :
         await message.add_reaction(avilable_greymoji[random.randint(0,len(avilable_greymoji))])
-        
-    #catmaid test
+    """
+    #soldier catmaid test
     if message.author.id == 394724520872771585 :
-        msg = message.content
-        if ("cat" in msg and "maid" in msg) :
-            await message.channel.send("Soldier is a cat maid! <:greysmile:742805250469265409>")
-    
+        x = random.randint(0,3)
+        msg = message.content.lower()
+        if (("cat" in msg and "maid" in msg) or "catmaid" in msg) and x == 0 :
+            await message.channel.send(SOLDIER_CATMAID[random.randint(0,len(SOLDIER_CATMAID))]+ "<:greysmile:742805250469265409>")
+    """
+
     #soldier catmaid meme
     if message.author.id == 314358105205112834 :
-        msg = message.content
-        if ("cat" in msg and "maid" in msg) :
-            await message.channel.send("Soldier is a cat maid! <:greysmile:742805250469265409>")
-    
+        x = random.randint(0,2)
+        msg = message.content.lower()
+        if (("no" in msg or "not" in msg) and (("cat" in msg and "maid" in msg) or "catmaid" in msg)) and x == 0 :
+            await message.channel.send(SOLDIER_CATMAID[random.randint(0,len(SOLDIER_CATMAID))]+ " <:greysmile:742805250469265409>")
+
     #Grey patpat feature
     if "patpat" in message.content.lower() or "greypat" in message.content.lower() :
         #Check if the message is from ZZ server
