@@ -99,14 +99,6 @@ async def mines(ctx, mapsizeX, mapsizeY, bombnum, aliases = ['mine', 'ms']) :
     context += " "
     await ctx.send(context)
 
-@bot.command()
-async def echo(ctx):
-    mention = ctx.message.mentions
-    role_mention = ctx.message.role_mentions
-    text = ctx.message.content[5:]
-    if (not ("id" in mention or "id" in role_mention or "@here" in text)) :
-        await ctx.send(text)
-
 @bot.command(pass_context = True , aliases=['UwU'])
 async def uwu(ctx):
     await ctx.send("<:greyUwU:790553515663163413>")
@@ -126,7 +118,6 @@ async def help(ctx):
     embed = discord.Embed(color = discord.Color.red())
     embed.set_author(name='Help')
     embed.add_field(name = '=mines x y z', value = "Make minesweeper, by size of x * y, with z mines.", inline = False)
-    embed.add_field(name = '=echo', value = "Grey will echo your voice!", inline = False)
     embed.add_field(name = '=uwu', value = "UwU", inline = False)
     embed.add_field(name = '=greypatpat, =gpp, =gp', value = "Grey will patpat to you!", inline = False)
     embed.add_field(name = '=ping', value = "Pong!", inline = False)
