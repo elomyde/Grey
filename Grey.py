@@ -29,7 +29,7 @@ bot.remove_command('help')
 #Answers
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
 avilable_greymoji = ["<:E_greyUwU:790553515663163413>", "<:E_greystare:789817320779546645>", "<:E_greynod:789817319760330794>", "<:E_greygiveme:789817320204664862>", "<a:E_greydontworryme:789817643297013770>"]
-SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
+SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is a cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
 
 #Server Emojis
 
