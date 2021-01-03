@@ -149,12 +149,11 @@ async def on_message(message):
     #Reply to "I love grey"
     if grey_love_checker(message) :
         await message.add_reaction(avilable_greymoji[random.randint(0,len(avilable_greymoji))])
-   
+    
     #soldier catmaid meme
     if message.author.id == 314358105205112834 :
-        x = random.randint(0,2)
-        msg = message.content.lower()
-        if (("no" in msg or "not" in msg) and (("cat" in msg and "maid" in msg) or "catmaid" in msg)) and x == 0 :
+        raw_words = message.content.lower()
+        if (("no" in raw_words or "not" in raw_words) and ("maid" in raw_words or "cat" in raw_words)) :
             await message.channel.send(SOLDIER_CATMAID[random.randint(0,len(SOLDIER_CATMAID))]+ " <:greysmile:742805250469265409>")
 
     #Grey patpat feature
