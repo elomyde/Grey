@@ -153,9 +153,9 @@ async def invite(ctx):
 async def on_message(message):
     #pretreatment
     content = message.content.lower()
-    channel = message.channel.id
-    author = message.author.id
-    guild_id = message.guild.id
+    channel = str(message.channel.id)
+    author = str(message.author.id)
+    guild_id = str(message.guild.id)
     #Check the server
     if str(channel) in CONFIG_PROHIBITED_CHANNEL :
         return
