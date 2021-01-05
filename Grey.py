@@ -124,7 +124,7 @@ async def uwu(ctx):
     
 @bot.command(pass_context = True , aliases=['greypat', 'gpp', 'gp', 'GPP', 'GP'])
 async def greypatpat(ctx):
-    await ctx.send(GREYMOJI['GreyUwU'])
+    await ctx.send(GREYMOJI['GreyPat'])
     await ctx.message.delete()
     
 @bot.command()
