@@ -157,17 +157,20 @@ async def on_message(message):
     author = str(message.author.id)
     guild_id = str(message.guild.id)
     #Check the server
-    if str(channel) in CONFIG_PROHIBITED_CHANNEL :
+    if channel in CONFIG_PROHIBITED_CHANNEL :
         return
 
     #Check the message is not from itself
     if author == bot.user:
+        print("bot")
         return
     
     #Reply to @Grey
-    if "<@!790571552345030686>" in content :
+    if bot.user.mentioned_in(message) :
+        print(author)
         await message.add_reaction(GREYMOJI['GreyNod'])
         if author == "740606402330099752" : #only for Nira-chan
+            print("Nira")
             await message.channel.send(REPLY_NIRA[random.randint(0,len(REPLY_NIRA))-1])
 
     #Reply to "Grey is dead" or "I love grey"
