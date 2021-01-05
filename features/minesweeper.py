@@ -49,6 +49,8 @@ def assembleMap(mapSizeX = 5, mapSizeY = 5, bombNumber = 10):
                 finalMap[i][j] = numMap[i+1][j+1]
     return finalMap
 
+#Testing
+
 """
 x = int(input())
 y = int(input())

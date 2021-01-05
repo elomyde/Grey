@@ -1,0 +1,29 @@
+{
+    "emojis" : {
+        "GreyUwU" : "<:E_greyUwU:790553515663163413>",
+        "GreyStare" : "<:E_greystare:789817320779546645>",
+        "GreyNod" : "<:E_greynod:789817319760330794>",
+        "GreyGiveMe" : "<:E_greygiveme:789817320204664862>",
+        "GreyDontWorryMe" : "<a:E_greydontworryme:789817643297013770>",
+        "GreyPat" : "<a:E_greypat:793768136859713546>"
+    },
+    "prohibitlists" : {
+        "ServerofGreyAnnouncements" : "791549841909350420",
+        "servertopic": "767550623767068742",
+        "countdown": "528641575752957983",
+        "halloffame": "778734720879951922",
+        "starboard": "752363402608902215",
+        "about": "760625396487684126",
+        "archive": "770726574865514517",
+        "botcommands": "742548177462231120",
+        "contest": "770795084002230292",
+        "links": "742069780328087613",
+        "roleslist": "758494476174884905",
+        "rolepicker": "781296501351383050",
+        "welcome": "603248229928140801",
+        "fishyleague": "742550881911701615",
+        "disgust" : "603246659295510557",
+        "stare": "747663718959153906",
+        "owie": "750558283315544155"
+    }
+}

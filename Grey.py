@@ -1,7 +1,9 @@
 #3537984 : perm int
 
 #Basics
-import random
+import os #to get token
+import json #json file parse
+import random #used in many games and features
 from features import minesweeper
 
 #Word tokenizers
@@ -14,9 +16,6 @@ import discord
 from discord.ext import commands
 from discord.ext import tasks
 
-#To get token from Heroku
-import os
-
 #Word tokenizers
 nltk.download('punkt')
 tokenizer = TreebankWordTokenizer()
@@ -26,29 +25,45 @@ bot = commands.Bot(command_prefix='=')
 client = discord.Client()
 bot.remove_command('help')
 
+CONFIG = {}
+with open("./config.json", "r") as f:
+    CONFIG = json.load(f)
+CONFIG_PROHIBITED_CHANNEL = list(CONFIG.pop('prohibitlists').values())
+GREYMOJI = CONFIG.pop('emojis')
+GREYMOJI_LIST = list(GREYMOJI.values())
+
 #Answers
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
-avilable_greymoji = ["<:E_greyUwU:790553515663163413>", "<:E_greystare:789817320779546645>", "<:E_greynod:789817319760330794>", "<:E_greygiveme:789817320204664862>", "<a:E_greydontworryme:789817643297013770>"]
 SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is a cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
+REPLY_NIRA = ["hi!", "poyo!", "Good day, Nira-chan!", "<a:E_greydontworryme:789817643297013770>"]
 
-#Server Emojis
-
-def grey_love_checker(message) :
-    raw_words = message.content.lower()
-    if "i love grey" in raw_words or "i love gray" in raw_words :
-        return True
-    else :
-        return False
-
-def grey_death_checker(message) :
-    #tokenize sentences
-    raw_words = message.content.lower()
-    sentences = sent_tokenize(raw_words)
+#Internal Functions
+def grey_love_checker(content) :
+    sentences = sent_tokenize(content)
     sentenceFlag = False
+    for sentence in sentences :
+        token_words = tokenizer.tokenize(sentence)
+        greyFlag = False
+        loveFlag = False
+        notFlag = False
+        for word in token_words :
+            if (('grey' in word) or ('gray' in word)) :
+                greyFlag = True
+                continue
+            if (('love' in word) or ('cute' in word) or ('luv' in word)) :
+                loveFlag = True
+                continue
+            if word == 'no' or word == 'not' or word =='n\'t' :
+                notFlag = not notFlag
+                continue
+        sentenceFlag = sentenceFlag or (greyFlag and loveFlag and not notFlag)
+    return sentenceFlag
 
+def grey_death_checker(content) :
+    sentences = sent_tokenize(content)
+    sentenceFlag = False
     #for every sentence, check if the sentece has the meaning 'grey is dead'
     for sentence in sentences:
-        sentence = sentence.lower()
         token_words = tokenizer.tokenize(sentence)
         greyFlag = False
         deathFlag = False
@@ -71,9 +86,9 @@ def grey_death_checker(message) :
                 notFlag = not notFlag
                 continue
         sentenceFlag = sentenceFlag or (greyFlag and deathFlag and not notFlag)
-    
     return sentenceFlag
 
+#Commands
 @bot.command()
 async def mines(ctx, mapsizeX, mapsizeY, bombnum, aliases = ['mine', 'ms']) :
     NUMBERS = [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:"]
@@ -109,7 +124,7 @@ async def uwu(ctx):
     
 @bot.command(pass_context = True , aliases=['greypat', 'gpp', 'gp', 'GPP', 'GP'])
 async def greypatpat(ctx):
-    await ctx.send("<a:E_greypat:793768136859713546>")
+    await ctx.send(GREYMOJI['GreyUwU'])
     await ctx.message.delete()
     
 @bot.command()
@@ -131,48 +146,61 @@ async def help(ctx):
 async def invite(ctx):
     embed = discord.Embed(color = discord.Color.orange())
     embed.add_field(name = 'Invitation', value = "Click [Here](https://discord.com/oauth2/authorize?client_id=790571552345030686&scope=bot&permissions=3537984) to make Grey join your server!")
-
     await ctx.send(embed = embed)
 
+#On-message events
 @bot.event
 async def on_message(message):
+    #pretreatment
+    content = message.content.lower()
+    channel = message.channel.id
+    author = message.author.id
+    guild_id = message.guild.id
+    #Check the server
+    if str(channel) in CONFIG_PROHIBITED_CHANNEL :
+        return
+
     #Check the message is not from itself
-    if message.author == bot.user:
+    if author == bot.user:
         return
     
-    #Reply to "Grey is dead"
-    if grey_death_checker(message) :
+    #Reply to @Grey
+    if "<@!790571552345030686>" in content :
+        await message.add_reaction(GREYMOJI['GreyNod'])
+        if author == "740606402330099752" : #only for Nira-chan
+            await message.channel.send(REPLY_NIRA[random.randint(0,len(REPLY_NIRA))-1])
+
+    #Reply to "Grey is dead" or "I love grey"
+    if grey_death_checker(content) :
         i = random.randint(0, len(NoU)-1)
         await message.channel.send(NoU[i])
+    elif grey_love_checker(content) :
+        await message.add_reaction(GREYMOJI_LIST[random.randint(0,len(GREYMOJI_LIST))-1])
+    else :
+        pass
     await bot.process_commands(message)
 
-    #Reply to "I love grey"
-    if grey_love_checker(message) :
-        await message.add_reaction(avilable_greymoji[random.randint(0,len(avilable_greymoji))])
-    
     #soldier catmaid meme
-    if message.author.id == 314358105205112834 :
-        raw_words = message.content.lower()
-        if (("no" in raw_words or "not" in raw_words) and ("maid" in raw_words or "cat" in raw_words)) :
-            await message.channel.send(SOLDIER_CATMAID[random.randint(0,len(SOLDIER_CATMAID))]+ " <:greysmile:742805250469265409>")
+    if author == 314358105205112834 :
+        if (("no" in content or "not" in content) and ("maid" in content or "cat" in content)) :
+            await message.channel.send(SOLDIER_CATMAID[random.randint(0,len(SOLDIER_CATMAID))-1]+ GREYMOJI['GreyNod'])
 
     #Grey patpat feature
-    if "patpat" in message.content.lower() or "greypat" in message.content.lower() :
+    if "patpat" in content or "greypat" in content :
         #Check if the message is from ZZ server
-        if message.guild.id == 603246092402032670 :
+        if guild_id == 603246092402032670 :
             for role in message.author.roles :
                 #Patpat role check
                 if role.id == 765347466169024512 :
                     try:
-                        await message.add_reaction('<a:E_greypat:793768136859713546>')
-                    except :
+                        await message.add_reaction(GREYMOJI['GreyPat'])
+                    except:
                         pass
                     break
                 else :
                     pass
         else :
-            print("not in zz")
-            await message.add_reaction('<a:E_greypat:793768136859713546>')
+            await message.add_reaction(GREYMOJI['GreyPat'])
 
 @bot.event
 async def on_ready():
