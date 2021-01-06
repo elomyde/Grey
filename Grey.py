@@ -191,10 +191,10 @@ async def on_message(message):
     #Grey patpat feature
     if "patpat" in content or "greypat" in content :
         #Check if the message is from ZZ server
-        if guild_id == 603246092402032670 :
+        if guild_id == "603246092402032670" :
             for role in message.author.roles :
                 #Patpat role check
-                if role.id == 765347466169024512 :
+                if role.id == "765347466169024512" :
                     try:
                         await message.add_reaction(GREYMOJI['GreyPat'])
                     except:
