@@ -1,6 +1,3 @@
 asyncio
 discord.py
 nltk
-tensorflow
-numpy
-pandas
