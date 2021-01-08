@@ -194,7 +194,7 @@ async def on_message(message):
         if guild_id == "603246092402032670" :
             for role in message.author.roles :
                 #Patpat role check
-                if role.id == "765347466169024512" :
+                if role.id == 765347466169024512 :
                     try:
                         await message.add_reaction(GREYMOJI['GreyPat'])
                     except:
