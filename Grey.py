@@ -145,7 +145,7 @@ async def ping(ctx):
 
 @bot.command()
 async def help(ctx):
-    embed = discord.Embed(color = discord.Color.red())
+    embed = discord.Embed(color = discord.Color.greyple())
     embed.set_author(name='Help')
     embed.add_field(name = '=mines x y z', value = "Make minesweeper, by size of x * y, with z mines.", inline = False)
     embed.add_field(name = '=uwu', value = "UwU", inline = False)
@@ -153,6 +153,7 @@ async def help(ctx):
     embed.add_field(name = '=ping', value = "Pong!", inline = False)
     embed.add_field(name = '=invite', value = "Make a invitation for your server.", inline = False)
     embed.add_field(name = '=vote', value = "Hold a vote!", inline = False)
+    embed.add_field(name = '=changeavatar', value = "Change the avatar of grey, can only used once per hour!", inline=False)
     await ctx.send(embed = embed)
 
 @bot.command()
@@ -185,7 +186,7 @@ async def changeavatar(ctx, aliases = ['cavatar', 'ca']):
     if (time.time() - AVATAR_TIME_PRIOR) < 3600 :
         await ctx.send (embed = embed_text("I can't change my avatar that quick!"))
         return
-        
+
     global avatarFlag
     AVATAR_TIME_PRIOR = time.time()
     with open('./images/grey1.png', 'rb') as f :
@@ -194,11 +195,11 @@ async def changeavatar(ctx, aliases = ['cavatar', 'ca']):
         image2 = f.read()
     
     if avatarFlag :
-        print("changed to grey1")
+        print("changed to grey2")
         avatarFlag = not avatarFlag
         await bot.user.edit(avatar = image2)
     else :
-        print("changed to grey2")
+        print("changed to grey1")
         avatarFlag = not avatarFlag
         await bot.user.edit(avatar = image1)
 
