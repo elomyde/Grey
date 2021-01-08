@@ -5,6 +5,7 @@ import os #to get token
 import json #json file parse
 import random #used in many games and features
 from features import minesweeper
+import time
 
 #Word tokenizers
 import nltk
@@ -19,23 +20,28 @@ from discord.ext import tasks
 #Word tokenizers
 nltk.download('punkt')
 tokenizer = TreebankWordTokenizer()
+avatarFlag = True
+
+CONFIG = {}
+with open("./config.json", "r") as f:
+    CONFIG = json.load(f)
+
+CONFIG_PROHIBITED_CHANNEL = list(CONFIG.pop('prohibitlists').values())
+GREYMOJI = CONFIG.pop('emojis')
+GREYMOJI_LIST = list(GREYMOJI.values())
+AVATAR_TIME_PRIOR = 0
+
+#Answers
+NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
+SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is a cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
+REPLY_NIRA = ["hi!", "poyo!", "Good day, Nira-chan!", "<a:E_greydontworryme:789817643297013770>"]
 
 #Discord APIs
 bot = commands.Bot(command_prefix='=')
 client = discord.Client()
 bot.remove_command('help')
 
-CONFIG = {}
-with open("./config.json", "r") as f:
-    CONFIG = json.load(f)
-CONFIG_PROHIBITED_CHANNEL = list(CONFIG.pop('prohibitlists').values())
-GREYMOJI = CONFIG.pop('emojis')
-GREYMOJI_LIST = list(GREYMOJI.values())
 
-#Answers
-NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
-SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is a cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
-REPLY_NIRA = ["hi!", "poyo!", "Good day, Nira-chan!", "<a:E_greydontworryme:789817643297013770>"]
 
 #Internal Functions
 def grey_love_checker(content) :
@@ -87,6 +93,12 @@ def grey_death_checker(content) :
                 continue
         sentenceFlag = sentenceFlag or (greyFlag and deathFlag and not notFlag)
     return sentenceFlag
+
+def embed_text(text) :
+    embed = discord.Embed(color = discord.Color.greyple())
+    embed.set_author(name = bot.user, icon_url = bot.user.avatar_url)
+    embed.add_field(name = 'message from grey', value = text)
+    return embed
 
 #Commands
 @bot.command()
@@ -140,6 +152,7 @@ async def help(ctx):
     embed.add_field(name = '=greypatpat, =gpp, =gp', value = "Grey will patpat to you!", inline = False)
     embed.add_field(name = '=ping', value = "Pong!", inline = False)
     embed.add_field(name = '=invite', value = "Make a invitation for your server.", inline = False)
+    embed.add_field(name = '=vote', value = "Hold a vote!", inline = False)
     await ctx.send(embed = embed)
 
 @bot.command()
@@ -147,6 +160,49 @@ async def invite(ctx):
     embed = discord.Embed(color = discord.Color.orange())
     embed.add_field(name = 'Invitation', value = "Click [Here](https://discord.com/oauth2/authorize?client_id=790571552345030686&scope=bot&permissions=3537984) to make Grey join your server!")
     await ctx.send(embed = embed)
+
+@bot.command()
+async def vote(ctx, *args):
+    text = ' '.join(args)
+    embed = discord.Embed(color = discord.Color.red())
+    embed.set_author(name = ctx.message.author, icon_url = ctx.message.author.avatar_url)
+    embed.add_field(name = 'Vote', value = text)
+    vote = await ctx.send(embed = embed)
+    await vote.add_reaction('✅')
+    await vote.add_reaction('❎')
+
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def initiate_avatar(ctx) :
+    with open('./images/grey1.png', 'rb') as f :
+        image = f.read()
+    print("changed to grey1")
+    await bot.user.edit(avatar = image)
+
+@bot.command()
+async def changeavatar(ctx, aliases = ['cavatar', 'ca']):
+    global AVATAR_TIME_PRIOR
+    if (time.time() - AVATAR_TIME_PRIOR) < 3600 :
+        await ctx.send (embed = embed_text("I can't change my avatar that quick!"))
+        return
+        
+    global avatarFlag
+    AVATAR_TIME_PRIOR = time.time()
+    with open('./images/grey1.png', 'rb') as f :
+        image1 = f.read()
+    with open('./images/grey2.png', 'rb') as f :
+        image2 = f.read()
+    
+    if avatarFlag :
+        print("changed to grey1")
+        avatarFlag = not avatarFlag
+        await bot.user.edit(avatar = image2)
+    else :
+        print("changed to grey2")
+        avatarFlag = not avatarFlag
+        await bot.user.edit(avatar = image1)
+
+
 
 #On-message events
 @bot.event
