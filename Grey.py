@@ -41,8 +41,6 @@ bot = commands.Bot(command_prefix='=')
 client = discord.Client()
 bot.remove_command('help')
 
-
-
 #Internal Functions
 def grey_love_checker(content) :
     sentences = sent_tokenize(content)
@@ -101,8 +99,8 @@ def embed_text(text) :
     return embed
 
 #Commands
-@bot.command()
-async def mines(ctx, mapsizeX, mapsizeY, bombnum, aliases = ['mine', 'ms']) :
+@bot.command(pass_context = True , aliases = ['mine', 'm'])
+async def mines(ctx, mapsizeX, mapsizeY, bombnum) :
     NUMBERS = [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:"]
     try:
         mapsizeX = int(mapsizeX)
@@ -143,34 +141,60 @@ async def greypatpat(ctx):
 async def ping(ctx):
     await ctx.send("pong! {0}ms".format(round(bot.latency, 1)))
 
-@bot.command()
+@bot.command(pass_context = True , aliases = ['Help', 'h'])
 async def help(ctx):
     embed = discord.Embed(color = discord.Color.greyple())
     embed.set_author(name='Help')
-    embed.add_field(name = '=mines x y z', value = "Make minesweeper, by size of x * y, with z mines.", inline = False)
-    embed.add_field(name = '=uwu', value = "UwU", inline = False)
-    embed.add_field(name = '=greypatpat, =gpp, =gp', value = "Grey will patpat to you!", inline = False)
+    embed.add_field(name = '=mines x y z, =mine, =m', value = "Make minesweeper, size of x * y with z mines.", inline = False)
+    embed.add_field(name = '=uwu, =UwU', value = "UwU", inline = False)
+    embed.add_field(name = '=greypatpat, =gpp, =gp, =GPP, GP', value = "Grey will patpat you!", inline = False)
     embed.add_field(name = '=ping', value = "Pong!", inline = False)
-    embed.add_field(name = '=invite', value = "Make a invitation for your server.", inline = False)
-    embed.add_field(name = '=vote', value = "Hold a vote!", inline = False)
-    embed.add_field(name = '=changeavatar', value = "Change the avatar of grey, can only used once per hour!", inline=False)
+    embed.add_field(name = '=invite, =Invite', value = "Make a invitation for your server.", inline = False)
+    embed.add_field(name = '=vote item / =vote a or b or ...(up to 8), =Vote, =v', value = "Create a vote!\nYou can create a single Yes-or-no vote\nor a vote with up to eight items.", inline = False)
+    embed.add_field(name = '=changeavatar, =ChangeAvatar, =ca', value = "Change an avatar of Grey, can only be used once per hour!", inline=False)
     await ctx.send(embed = embed)
 
-@bot.command()
+@bot.command(pass_context = True , aliases = ['Invite'])
 async def invite(ctx):
-    embed = discord.Embed(color = discord.Color.orange())
+    embed = discord.Embed(color = discord.Color.greyple())
     embed.add_field(name = 'Invitation', value = "Click [Here](https://discord.com/oauth2/authorize?client_id=790571552345030686&scope=bot&permissions=3537984) to make Grey join your server!")
     await ctx.send(embed = embed)
 
-@bot.command()
+@bot.command(pass_context = True , aliases = ['Vote', 'v'])
 async def vote(ctx, *args):
-    text = ' '.join(args)
-    embed = discord.Embed(color = discord.Color.red())
+    sentence = ' '.join(args)
+    texts = sentence.split('or')
+    embed = discord.Embed(color = discord.Color.greyple())
     embed.set_author(name = ctx.message.author, icon_url = ctx.message.author.avatar_url)
-    embed.add_field(name = 'Vote', value = text)
-    vote = await ctx.send(embed = embed)
-    await vote.add_reaction('✅')
-    await vote.add_reaction('❎')
+    INDICATORS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭']
+
+    if sentence == "" :
+        embed.add_field(name = 'Vote', value = "Please create a proper vote!\nYou must input at least one item.")
+        await ctx.send(embed = embed)
+        return
+
+    if len(texts) == 1 :
+        embed.add_field(name = 'Vote', value = sentence)
+        vote = await ctx.send(embed = embed)
+        await vote.add_reaction('✅')
+        await vote.add_reaction('❎')
+    
+    elif len(texts) > 1 and len(texts) <= 8 :
+        text = ""
+        i = 0
+        for item in texts :
+            text += INDICATORS[i] + " " + item + "\n"
+            i += 1
+            if i < len(texts) : 
+                text += "Or\n"
+        embed.add_field(name = 'Vote', value = text)
+        vote = await ctx.send(embed = embed)
+        for i in range(len(texts)) :
+            await vote.add_reaction(INDICATORS[i])
+
+    else :
+        embed.add_field(name = 'Vote', value = "Please create a proper vote!\nThere can be up to 8 items.")
+        await ctx.send(embed = embed)
 
 @bot.command()
 @commands.has_permissions(administrator=True)
@@ -180,8 +204,8 @@ async def initiate_avatar(ctx) :
     print("changed to grey1")
     await bot.user.edit(avatar = image)
 
-@bot.command()
-async def changeavatar(ctx, aliases = ['cavatar', 'ca']):
+@bot.command(pass_context = True, aliases = ['ChangeAvatar', 'ca'])
+async def changeavatar(ctx):
     global AVATAR_TIME_PRIOR
     if (time.time() - AVATAR_TIME_PRIOR) < 3600 :
         await ctx.send (embed = embed_text("I can't change my avatar that quick!"))
@@ -202,8 +226,6 @@ async def changeavatar(ctx, aliases = ['cavatar', 'ca']):
         print("changed to grey1")
         avatarFlag = not avatarFlag
         await bot.user.edit(avatar = image1)
-
-
 
 #On-message events
 @bot.event
