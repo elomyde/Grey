@@ -198,8 +198,8 @@ async def vote(ctx, *args):
         await ctx.send(embed = embed)
 
 @bot.command(pass_context = True, aliases = ['sa']):
-async def satrunage(ctx, age):
-    
+async def saturnage(ctx, age):
+
     await ctx.send (embed = embed_text("Your age in Saturnian is %d" % math.floor(age * 10.8433)))
 @bot.command()
 @commands.has_permissions(administrator=True)
