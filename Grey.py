@@ -6,6 +6,7 @@ import json #json file parse
 import random #used in many games and features
 from features import minesweeper
 import time
+import math
 
 #Word tokenizers
 import nltk
@@ -196,6 +197,10 @@ async def vote(ctx, *args):
         embed.add_field(name = 'Vote', value = "Please create a proper vote!\nThere can be up to 8 items.")
         await ctx.send(embed = embed)
 
+@bot.command(pass_context = True, aliases = ['sa']):
+async def satrunage(ctx, age):
+    
+    await ctx.send (embed = embed_text("Your age in Saturnian is %d" % math.floor(age * 10.8433)))
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def initiate_avatar(ctx) :
