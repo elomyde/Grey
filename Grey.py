@@ -153,6 +153,7 @@ async def help(ctx):
     embed.add_field(name = '=invite, =Invite', value = "Make a invitation for your server.", inline = False)
     embed.add_field(name = '=vote item / =vote a or b or ...(up to 8), =Vote, =v', value = "Create a vote!\nYou can create a single Yes-or-no vote\nor a vote with up to eight items.", inline = False)
     embed.add_field(name = '=changeavatar, =ChangeAvatar, =ca', value = "Change an avatar of Grey, can only be used once per hour!", inline=False)
+    embed.add_field(name = '=saturnage, =sa', value = "Calculate your Earth-age into gorgeous Saturn-age", inline=False)
     await ctx.send(embed = embed)
 
 @bot.command(pass_context = True , aliases = ['Invite'])
@@ -163,8 +164,17 @@ async def invite(ctx):
 
 @bot.command(pass_context = True , aliases = ['Vote', 'v'])
 async def vote(ctx, *args):
-    sentence = ' '.join(args)
-    texts = sentence.split('or')
+    texts = []
+    sentence = ""
+    for arg in args :
+        if arg == 'or' or arg == 'Or':
+            if sentence != "" :
+                texts.append(sentence)
+                sentence = ""
+        else :
+            sentence += arg + ' '
+    texts.append(sentence)
+
     embed = discord.Embed(color = discord.Color.greyple())
     embed.set_author(name = ctx.message.author, icon_url = ctx.message.author.avatar_url)
     INDICATORS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭']
