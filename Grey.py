@@ -5,8 +5,10 @@ import os #to get token
 import json #json file parse
 import random #used in many games and features
 from features import minesweeper
+from features import emojitext
 import time
 import math
+import re
 
 #Word tokenizers
 import nltk
@@ -128,6 +130,41 @@ async def mines(ctx, mapsizeX, mapsizeY, bombnum) :
     context += " "
     await ctx.send(context)
 
+@commands.cooldown(1, 20, commands.BucketType.user)
+@bot.command(pass_context = True, aliases = ['etext', 'et'])
+async def emojitotext(ctx, emo, text) :
+    mask_normal = re.compile(r'^<[:]\w+[:]\w+>$')
+    mask_moving = re.compile(r'^<a[:]\w+[:]\w+>$')
+    if not(re.fullmatch(mask_normal, emo) or re.fullmatch(mask_moving, emo)) :
+        await ctx.send(embed = embed_text("Please input proper emoji!"))
+        return
+    
+    emo_id = emo.split(':')[-1][:-1]
+
+    try :
+        x = bot.get_emoji(int(emo_id))
+    except :
+        await ctx.send(embed = embed_text("Please input proper emoji!"))
+        return
+    
+    if x == None :
+        await ctx.send(embed = embed_text("Please input proper emoji!"))
+        return
+
+    if len(text) > 10 :
+        await ctx.send(embed = embed_text("This text is too long to convert"))
+        return
+    conv_text = emojitext.emojiconverter(text, emo, "<:blank:788433633655783434>")
+
+    for x in conv_text :
+        await ctx.send(x)
+
+@emojitotext.error
+async def info_error(ctx, error) :
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'This command is ratelimited, please try again in {:.1f}s'.format(error.retry_after)
+        await ctx.send(embed = embed_text(msg))
+
 @bot.command(pass_context = True , aliases=['UwU'])
 async def uwu(ctx):
     await ctx.send("<:E_greyUwU:790553515663163413>")
@@ -146,7 +183,7 @@ async def ping(ctx):
 async def help(ctx):
     embed = discord.Embed(color = discord.Color.greyple())
     embed.set_author(name='Help')
-    embed.add_field(name = '=mines x y z, =mine, =m', value = "Make minesweeper, size of x * y with z mines.", inline = False)
+    embed.add_field(name = '=mines [x] [y] [z], =mine, =m', value = "Make minesweeper, size of x * y with z mines.", inline = False)
     embed.add_field(name = '=uwu, =UwU', value = "UwU", inline = False)
     embed.add_field(name = '=greypatpat, =gpp, =gp, =GPP, GP', value = "Grey will patpat you!", inline = False)
     embed.add_field(name = '=ping', value = "Pong!", inline = False)
@@ -154,6 +191,7 @@ async def help(ctx):
     embed.add_field(name = '=vote item / =vote a or b or ...(up to 8), =Vote, =v', value = "Create a vote!\nYou can create a single Yes-or-no vote\nor a vote with up to eight items.", inline = False)
     embed.add_field(name = '=changeavatar, =ChangeAvatar, =ca', value = "Change an avatar of Grey, can only be used once per hour!", inline=False)
     embed.add_field(name = '=saturnage, =sa', value = "Calculate your Earth-age into gorgeous Saturn-age", inline=False)
+    embed.add_field(name = '=emojitotext [emoji] [text], =etext, =et', value = "Convert your text to emoji!", inline=False)
     await ctx.send(embed = embed)
 
 @bot.command(pass_context = True , aliases = ['Invite'])
