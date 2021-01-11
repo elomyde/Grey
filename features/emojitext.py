@@ -48,10 +48,8 @@ def emojiconverter(text, emoji, blank) :
     padding = [[b],[b],[b],[b],[b]]
     converted_matrix = [[],[],[],[],[]]
     text = text.upper()
-    print(text)
     for char in text :
         char = str(char)
-        print(char)
         try :
             templist = items.get(char)
             converted_matrix = numpy.hstack((converted_matrix,templist))
