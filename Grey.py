@@ -312,6 +312,10 @@ async def on_message(message):
             print("Nira")
             await message.channel.send(REPLY_NIRA[random.randint(0,len(REPLY_NIRA))-1])
 
+    #Hai
+    if content == "Hai" or content == "hai" :
+        await message.channel.send("Hai!")
+    
     #Reply to "Grey is dead" or "I love grey"
     if grey_death_checker(content) :
         i = random.randint(0, len(NoU)-1)
