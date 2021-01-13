@@ -313,15 +313,18 @@ async def on_message(message):
             await message.channel.send(REPLY_NIRA[random.randint(0,len(REPLY_NIRA))-1])
 
     #Hai
-    if content == "Hai" or content == "hai" :
+    if (content == "Hai" or content == "hai") and random.randint(0,1) == 0 :
         await message.channel.send("Hai!")
+        return
     
     #Reply to "Grey is dead" or "I love grey"
     if grey_death_checker(content) :
         i = random.randint(0, len(NoU)-1)
         await message.channel.send(NoU[i])
+        return
     elif grey_love_checker(content) :
         await message.add_reaction(GREYMOJI_LIST[random.randint(0,len(GREYMOJI_LIST))-1])
+        return
     else :
         pass
     await bot.process_commands(message)
