@@ -115,7 +115,7 @@ def embed_text(text) :
 @tasks.loop(hours = 4)
 async def hellonira() :
     global bot
-    channel = bot.get_channel(603246092402032673)
+    channel = bot.get_channel(603246092402032673) #603246092402032673 #798217844784758894
     await channel.send(RAND_HELLO[random.randint(0,len(RAND_HELLO)-1)].format(nira = CALL_NIRA))
 
 @bot.command(pass_context = True , aliases = ['mine', 'm'])
@@ -312,6 +312,7 @@ async def changeavatar(ctx):
 async def on_message(message):
     #pretreatment
     content = message.content.lower()
+    print(content)
     toknized_content = tokenizer.tokenize(content)
     channel = str(message.channel.id)
     author = str(message.author.id)
@@ -321,16 +322,13 @@ async def on_message(message):
         return
 
     #Check the message is not from itself
-    if author == bot.user:
-        print("bot")
+    if author == 790571552345030686: # itself
         return
     
     #Reply to @Grey
     if bot.user.mentioned_in(message) :
-        print(author)
         await message.add_reaction(GREYMOJI['GreyNod'])
-        if author == "740606402330099752" : #only for Nira-chan
-            print("Nira")
+        if author == 740606402330099752 : #only for Nira-chan
             await message.channel.send(REPLY_NIRA[random.randint(0,len(REPLY_NIRA))-1])
 
     #Hai
