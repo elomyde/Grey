@@ -28,21 +28,31 @@ avatarFlag = True
 CONFIG = {}
 with open("./config.json", "r") as f:
     CONFIG = json.load(f)
+RAND_HELLO = list()
+with open("./random_hello.txt", "r", encoding = "utf-8") as f2 :
+    while True :
+        line = f2.readline().rstrip("\n")
+        if not line :
+            break
+        RAND_HELLO.append(line)
 
 CONFIG_PROHIBITED_CHANNEL = list(CONFIG.pop('prohibitlists').values())
 GREYMOJI = CONFIG.pop('emojis')
 GREYMOJI_LIST = list(GREYMOJI.values())
 AVATAR_TIME_PRIOR = 0
 
-#Answers
+#Constants
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
 SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is a cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
 REPLY_NIRA = ["hi!", "poyo!", "Good day, Nira-chan!", "<a:E_greydontworryme:789817643297013770>"]
+CALL_NIRA = "<@740606402330099752>"
 
 #Discord APIs
 bot = commands.Bot(command_prefix='=')
 client = discord.Client()
 bot.remove_command('help')
+
+#Channel
 
 #Internal Functions
 def grey_love_checker(content) :
@@ -102,6 +112,12 @@ def embed_text(text) :
     return embed
 
 #Commands
+@tasks.loop(hours = 4)
+async def hellonira() :
+    global bot
+    channel = bot.get_channel(603246092402032673)
+    await channel.send(RAND_HELLO[random.randint(0,len(RAND_HELLO)-1)].format(nira = CALL_NIRA))
+
 @bot.command(pass_context = True , aliases = ['mine', 'm'])
 async def mines(ctx, mapsizeX, mapsizeY, bombnum) :
     NUMBERS = [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:"]
@@ -164,6 +180,10 @@ async def info_error(ctx, error) :
     if isinstance(error, commands.CommandOnCooldown):
         msg = 'This command is ratelimited, please try again in {:.1f}s'.format(error.retry_after)
         await ctx.send(embed = embed_text(msg))
+
+@bot.command(pass_context = True, aliases = ['hn'])
+async def hitonira(ctx) :
+    await ctx.send("<@740606402330099752> " + "Hello ,Nira-chan!")
 
 @bot.command(pass_context = True , aliases=['UwU'])
 async def uwu(ctx):
@@ -292,7 +312,7 @@ async def changeavatar(ctx):
 async def on_message(message):
     #pretreatment
     content = message.content.lower()
-    toknized_content = sent_tokenize(content)
+    toknized_content = tokenizer.tokenize(content)
     channel = str(message.channel.id)
     author = str(message.author.id)
     guild_id = str(message.guild.id)
@@ -360,5 +380,6 @@ async def on_ready():
     print('logging in')
     print('connection was succesful')
     await bot.change_presence(status=discord.Status.online, activity=None)
+    hellonira.start()
 
 bot.run(os.environ['token'])
