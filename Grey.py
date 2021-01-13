@@ -115,7 +115,7 @@ def embed_text(text) :
 @tasks.loop(hours = 4)
 async def hellonira() :
     global bot
-    channel = bot.get_channel(798217844784758894) #603246092402032673 #798217844784758894
+    channel = bot.get_channel(603246092402032673) #603246092402032673 #798217844784758894
     await channel.send(RAND_HELLO[random.randint(0,len(RAND_HELLO)-1)].format(nira = CALL_NIRA))
 
 @bot.command(pass_context = True , aliases = ['mine', 'm'])
