@@ -277,13 +277,15 @@ async def changeavatar(ctx):
         image2 = f.read()
     
     if avatarFlag :
-        print("changed to grey2")
         avatarFlag = not avatarFlag
         await bot.user.edit(avatar = image2)
+        await ctx.send (embed = embed_text("Changed avatar to Hunch gray's Grey-kun."))
+        return
     else :
-        print("changed to grey1")
         avatarFlag = not avatarFlag
         await bot.user.edit(avatar = image1)
+        await ctx.send (embed = embed_text("Changed avatar to Ham's Grey-chan."))
+        return
 
 #On-message events
 @bot.event
