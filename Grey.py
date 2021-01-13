@@ -190,7 +190,8 @@ async def help(ctx):
     embed.add_field(name = '=invite, =Invite', value = "Make a invitation for your server.", inline = False)
     embed.add_field(name = '=vote item / =vote a or b or ...(up to 8), =Vote, =v', value = "Create a vote!\nYou can create a single Yes-or-no vote\nor a vote with up to eight items.", inline = False)
     embed.add_field(name = '=changeavatar, =ChangeAvatar, =ca', value = "Change an avatar of Grey, can only be used once per hour!", inline=False)
-    embed.add_field(name = '=saturnage, =sa', value = "Calculate your Earth-age into gorgeous Saturn-age", inline=False)
+    embed.add_field(name = '=saturnage, =sa', value = "Convert your Earth-age into gorgeous Saturn-age", inline=False)
+    embed.add_field(name = '=earthage, =ea', value = "Convert your Saturn-age into Earth-age", inline=False)
     embed.add_field(name = '=emojitotext [emoji] [text], =etext, =et', value = "Convert your text to emoji!", inline=False)
     await ctx.send(embed = embed)
 
@@ -252,7 +253,7 @@ async def saturnage(ctx, age):
 @bot.command(pass_context = True, aliases = ['ea'])
 async def earthage(ctx, age):
     await ctx.send (embed = embed_text("Your age in Earth is %d" % math.floor(int(age) / 10.8433)))
-    
+
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def initiate_avatar(ctx) :
