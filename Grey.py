@@ -292,6 +292,7 @@ async def changeavatar(ctx):
 async def on_message(message):
     #pretreatment
     content = message.content.lower()
+    toknized_content = sent_tokenize(content)
     channel = str(message.channel.id)
     author = str(message.author.id)
     guild_id = str(message.guild.id)
@@ -313,7 +314,10 @@ async def on_message(message):
             await message.channel.send(REPLY_NIRA[random.randint(0,len(REPLY_NIRA))-1])
 
     #Hai
-    if (content == "Hai" or content == "hai") and random.randint(0,1) == 0 :
+    if (content == "hai") :
+        await message.channel.send("Hai!")
+        return
+    elif ("hai" in toknized_content) and random.randint(0,1) == 0 :
         await message.channel.send("Hai!")
         return
     
