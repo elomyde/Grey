@@ -115,7 +115,7 @@ def embed_text(text) :
 @tasks.loop(hours = 4)
 async def hellonira() :
     global bot
-    channel = bot.get_channel(603246092402032673) #603246092402032673 #798217844784758894
+    channel = bot.get_channel(798217844784758894) #603246092402032673 #798217844784758894
     await channel.send(RAND_HELLO[random.randint(0,len(RAND_HELLO)-1)].format(nira = CALL_NIRA))
 
 @bot.command(pass_context = True , aliases = ['mine', 'm'])
@@ -269,13 +269,15 @@ async def vote(ctx, *args):
 @bot.command(pass_context = True, aliases = ['sa'])
 async def saturnage(ctx, age):
     try:
-        await ctx.send (embed = embed_text("Your age in Saturnian is %.2f" % float(age)/29.4577))
-    except :
+        age = int(age)
+        await ctx.send (embed = embed_text("Your age in Saturnian is %.2f" % (float(age)/29.4577)))
+    except Exception as e:
         await ctx.send(embed = embed_text("Please input proper age!"))
 
 @bot.command(pass_context = True, aliases = ['ea'])
 async def earthage(ctx, age):
     try:
+        age = int(age)
         await ctx.send (embed = embed_text("Your age in Earth is %d" % math.floor(int(float(age)*29.4577))))
     except :
         await ctx.send(embed = embed_text("Please input proper age!"))
@@ -318,7 +320,6 @@ async def changeavatar(ctx):
 async def on_message(message):
     #pretreatment
     content = message.content.lower()
-    print(content)
     toknized_content = tokenizer.tokenize(content)
     channel = str(message.channel.id)
     author = str(message.author.id)
