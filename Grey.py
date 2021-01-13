@@ -268,11 +268,17 @@ async def vote(ctx, *args):
 
 @bot.command(pass_context = True, aliases = ['sa'])
 async def saturnage(ctx, age):
-    await ctx.send (embed = embed_text("Your age in Saturnian is %d" % math.floor(int(age) * 10.8433)))
+    try:
+        await ctx.send (embed = embed_text("Your age in Saturnian is %.2f" % float(age)/29.4577))
+    except :
+        await ctx.send(embed = embed_text("Please input proper age!"))
 
 @bot.command(pass_context = True, aliases = ['ea'])
 async def earthage(ctx, age):
-    await ctx.send (embed = embed_text("Your age in Earth is %d" % math.floor(int(age) / 10.8433)))
+    try:
+        await ctx.send (embed = embed_text("Your age in Earth is %d" % math.floor(int(float(age)*29.4577))))
+    except :
+        await ctx.send(embed = embed_text("Please input proper age!"))
 
 @bot.command()
 @commands.has_permissions(administrator=True)
