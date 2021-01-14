@@ -9,6 +9,7 @@ from features import emojitext
 import time
 import math
 import re
+import asyncio
 
 #Word tokenizers
 import nltk
@@ -28,6 +29,7 @@ avatarFlag = True
 CONFIG = {}
 with open("./config.json", "r") as f:
     CONFIG = json.load(f)
+
 RAND_HELLO = list()
 with open("./random_hello.txt", "r", encoding = "utf-8") as f2 :
     while True :
@@ -44,7 +46,7 @@ AVATAR_TIME_PRIOR = 0
 #Constants
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
 SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is a cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
-REPLY_NIRA = ["hi!", "poyo!", "Good day, Nira-chan!", "<a:E_greydontworryme:789817643297013770>"]
+REPLY_NIRA = ["<a:E_greydontworryme:789817643297013770>", "<:greysmile:742805250469265409>", "<:E_greysmile:796762990794899467>", "<:E_greyUwU:790553515663163413>"]
 CALL_NIRA = "<@740606402330099752>"
 
 #Discord APIs
@@ -111,13 +113,25 @@ def embed_text(text) :
     embed.add_field(name = 'message from grey', value = text)
     return embed
 
-#Commands
+#Admin Commands
+
+#Nira-Grey Relationship
 @tasks.loop(hours = 4)
 async def hellonira() :
     global bot
     channel = bot.get_channel(603246092402032673) #603246092402032673 #798217844784758894
+    async with channel.typing() :
+        await asyncio.sleep(3)
     await channel.send(RAND_HELLO[random.randint(0,len(RAND_HELLO)-1)].format(nira = CALL_NIRA))
 
+@bot.command(pass_context = True, aliases = ['hn'])
+@commands.cooldown(1, 5, commands.BucketType.user)
+async def hitonira(ctx) :
+    async with ctx.channel.typing() :
+        await asyncio.sleep(3)
+    await ctx.send("<@740606402330099752> " + "Hello, Nira-chan!")
+
+#Commands
 @bot.command(pass_context = True , aliases = ['mine', 'm'])
 async def mines(ctx, mapsizeX, mapsizeY, bombnum) :
     NUMBERS = [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:"]
@@ -180,10 +194,6 @@ async def info_error(ctx, error) :
     if isinstance(error, commands.CommandOnCooldown):
         msg = 'This command is ratelimited, please try again in {:.1f}s'.format(error.retry_after)
         await ctx.send(embed = embed_text(msg))
-
-@bot.command(pass_context = True, aliases = ['hn'])
-async def hitonira(ctx) :
-    await ctx.send("<@740606402330099752> " + "Hello ,Nira-chan!")
 
 @bot.command(pass_context = True , aliases=['UwU'])
 async def uwu(ctx):
@@ -271,7 +281,7 @@ async def saturnage(ctx, age):
     try:
         age = int(age)
         await ctx.send (embed = embed_text("Your age in Saturnian is %.2f" % (float(age)/29.4577)))
-    except Exception as e:
+    except :
         await ctx.send(embed = embed_text("Please input proper age!"))
 
 @bot.command(pass_context = True, aliases = ['ea'])
@@ -282,18 +292,10 @@ async def earthage(ctx, age):
     except :
         await ctx.send(embed = embed_text("Please input proper age!"))
 
-@bot.command()
-@commands.has_permissions(administrator=True)
-async def initiate_avatar(ctx) :
-    with open('./images/grey1.png', 'rb') as f :
-        image = f.read()
-    print("changed to grey1")
-    await bot.user.edit(avatar = image)
-
 @bot.command(pass_context = True, aliases = ['ChangeAvatar', 'ca'])
 async def changeavatar(ctx):
     global AVATAR_TIME_PRIOR
-    if (time.time() - AVATAR_TIME_PRIOR) < 3600 :
+    if (time.time() - AVATAR_TIME_PRIOR) < 300 :
         await ctx.send (embed = embed_text("I can't change my avatar that quick!"))
         return
 
@@ -322,21 +324,27 @@ async def on_message(message):
     content = message.content.lower()
     toknized_content = tokenizer.tokenize(content)
     channel = str(message.channel.id)
-    author = str(message.author.id)
-    guild_id = str(message.guild.id)
+    author = message.author.id
+    guild_id = message.guild.id
+
     #Check the server
     if channel in CONFIG_PROHIBITED_CHANNEL :
         return
 
     #Check the message is not from itself
-    if author == 790571552345030686: # itself
+    if author == bot.user.id : # itself
         return
     
     #Reply to @Grey
     if bot.user.mentioned_in(message) :
         await message.add_reaction(GREYMOJI['GreyNod'])
         if author == 740606402330099752 : #only for Nira-chan
+            async with message.channel.typing() :
+                await asyncio.sleep(1.5)
             await message.channel.send(REPLY_NIRA[random.randint(0,len(REPLY_NIRA))-1])
+        return
+    else :
+        pass
 
     #Hai
     if (content == "hai") :
@@ -345,6 +353,8 @@ async def on_message(message):
     elif ("hai" in toknized_content) and random.randint(0,1) == 0 :
         await message.channel.send("Hai!")
         return
+    else :
+        pass
     
     #Reply to "Grey is dead" or "I love grey"
     if grey_death_checker(content) :
@@ -356,6 +366,7 @@ async def on_message(message):
         return
     else :
         pass
+
     await bot.process_commands(message)
 
     #soldier catmaid meme
@@ -366,7 +377,7 @@ async def on_message(message):
     #Grey patpat feature
     if "patpat" in content or "greypat" in content :
         #Check if the message is from ZZ server
-        if guild_id == "603246092402032670" :
+        if guild_id == 603246092402032670 :
             for role in message.author.roles :
                 #Patpat role check
                 if role.id == 765347466169024512 :
