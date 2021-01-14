@@ -66,10 +66,10 @@ def grey_love_checker(content) :
         loveFlag = False
         notFlag = False
         for word in token_words :
-            if (('grey' in word) or ('gray' in word)) :
+            if (('grey' == word) or ('gray' == word)) :
                 greyFlag = True
                 continue
-            if (('love' in word) or ('cute' in word) or ('luv' in word)) :
+            if (('love' == word) or ('cute' == word) or ('luv' == word)) :
                 loveFlag = True
                 continue
             if word == 'no' or word == 'not' or word =='n\'t' :
@@ -88,15 +88,15 @@ def grey_death_checker(content) :
         deathFlag = False
         notFlag = False
         for word in token_words :
-            if (('grey' in word) or ('gray' in word)) :
+            if (('grey' == word) or ('gray' == word)) :
                 greyFlag = True
                 continue
 
-            if (('dead' in word) or ('die' in word) or ('gone' in word)) :
+            if (('dead' == word) or ('die' == word) or ('gone' == word)) :
                 deathFlag = True
                 continue
             
-            if ('alive' in word or 'sentien' in word) :
+            if ('alive' == word or 'sentien' == word) :
                 deathFlag = True
                 notFlag = not notFlag
                 continue
