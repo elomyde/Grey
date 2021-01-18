@@ -1,11 +1,9 @@
 #3537984 : perm int
-
 #Basics
 import os #to get token
 import json #json file parse
 import random #used in many games and features
-from features import minesweeper
-from features import emojitext
+from features import minesweeper, emojitext, embeds
 import time
 import math
 import re
@@ -54,9 +52,9 @@ bot = commands.Bot(command_prefix='=')
 client = discord.Client()
 bot.remove_command('help')
 
-#Channel
+# Channel
 
-#Internal Functions
+# Internal functions
 def grey_love_checker(content) :
     sentences = sent_tokenize(content)
     sentenceFlag = False
@@ -113,10 +111,20 @@ def embed_text(text) :
     embed.add_field(name = 'message from grey', value = text)
     return embed
 
-#Admin Commands
+@bot.command()
+async def initiate_help() :
+    BOT_COMMANDS_CHANNEL = 742548177462231120
+    channel = bot.get_channel(BOT_COMMANDS_CHANNEL)
+    HELP_REGULAR_ID = 800569960644214847
+    HELP_FUN_ID = 800589931373527072
+    regular_msg = await channel.fetch_message(HELP_REGULAR_ID)
+    await regular_msg.edit(embed = embeds.help_regular)
+    fun_msg = await channel.fetch_message(HELP_FUN_ID)
+    await fun_msg.edit(embed = embeds.help_fun)
 
-#Nira-Grey Relationship
-@tasks.loop(hours = 4)
+# loops
+
+@tasks.loop(hours = 8)
 async def hellonira() :
     global bot
     channel = bot.get_channel(603246092402032673) #603246092402032673 #798217844784758894
@@ -124,6 +132,7 @@ async def hellonira() :
         await asyncio.sleep(3)
     await channel.send(RAND_HELLO[random.randint(0,len(RAND_HELLO)-1)].format(nira = CALL_NIRA))
 
+# Test commands
 @bot.command(pass_context = True, aliases = ['hn'])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def hitonira(ctx) :
@@ -131,7 +140,12 @@ async def hitonira(ctx) :
         await asyncio.sleep(3)
     await ctx.send("<@740606402330099752> " + "Hello, Nira-chan!")
 
-#Commands
+@bot.command()
+async def ping(ctx):
+    await ctx.send("pong! {0}ms".format(round(bot.latency, 1)))
+
+# Fun commands
+
 @bot.command(pass_context = True , aliases = ['mine', 'm'])
 async def mines(ctx, mapsizeX, mapsizeY, bombnum) :
     NUMBERS = [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:"]
@@ -195,6 +209,47 @@ async def info_error(ctx, error) :
         msg = 'This command is ratelimited, please try again in {:.1f}s'.format(error.retry_after)
         await ctx.send(embed = embed_text(msg))
 
+@bot.command(pass_context = True, aliases = ['sa'])
+async def saturnage(ctx, age):
+    try:
+        age = int(age)
+        await ctx.send (embed = embed_text("Your age in Saturnian is %.2f" % (float(age)/29.4577)))
+    except :
+        await ctx.send(embed = embed_text("Please input proper age!"))
+
+@bot.command(pass_context = True, aliases = ['ea'])
+async def earthage(ctx, age):
+    try:
+        age = int(age)
+        await ctx.send (embed = embed_text("Your age in Earth is %d" % math.floor(int(float(age)*29.4577))))
+    except :
+        await ctx.send(embed = embed_text("Please input proper age!"))
+
+@bot.command(pass_context = True, aliases = ['ChangeAvatar', 'ca'])
+async def changeavatar(ctx):
+    global AVATAR_TIME_PRIOR
+    if (time.time() - AVATAR_TIME_PRIOR) < 300 :
+        await ctx.send (embed = embed_text("I can't change my avatar that quick!"))
+        return
+
+    global avatarFlag
+    AVATAR_TIME_PRIOR = time.time()
+    with open('./images/grey1.png', 'rb') as f :
+        image1 = f.read()
+    with open('./images/grey2.png', 'rb') as f :
+        image2 = f.read()
+    
+    if avatarFlag :
+        avatarFlag = not avatarFlag
+        await bot.user.edit(avatar = image2)
+        await ctx.send (embed = embed_text("Changed avatar to Hunch gray's Grey-kun."))
+        return
+    else :
+        avatarFlag = not avatarFlag
+        await bot.user.edit(avatar = image1)
+        await ctx.send (embed = embed_text("Changed avatar to Ham's Grey-chan."))
+        return
+
 @bot.command(pass_context = True , aliases=['UwU'])
 async def uwu(ctx):
     await ctx.send("<:E_greyUwU:790553515663163413>")
@@ -205,25 +260,12 @@ async def greypatpat(ctx):
     await ctx.send(GREYMOJI['GreyPat'])
     await ctx.message.delete()
     
-@bot.command()
-async def ping(ctx):
-    await ctx.send("pong! {0}ms".format(round(bot.latency, 1)))
+# Regular commands
 
 @bot.command(pass_context = True , aliases = ['Help', 'h'])
-async def help(ctx):
-    embed = discord.Embed(color = discord.Color.greyple())
-    embed.set_author(name='Help')
-    embed.add_field(name = '=mines [x] [y] [z], =mine, =m', value = "Make minesweeper, size of x * y with z mines.", inline = False)
-    embed.add_field(name = '=uwu, =UwU', value = "UwU", inline = False)
-    embed.add_field(name = '=greypatpat, =gpp, =gp, =GPP, GP', value = "Grey will patpat you!", inline = False)
-    embed.add_field(name = '=ping', value = "Pong!", inline = False)
-    embed.add_field(name = '=invite, =Invite', value = "Make a invitation for your server.", inline = False)
-    embed.add_field(name = '=vote item / =vote a or b or ...(up to 8), =Vote, =v', value = "Create a vote!\nYou can create a single Yes-or-no vote\nor a vote with up to eight items.", inline = False)
-    embed.add_field(name = '=changeavatar, =ChangeAvatar, =ca', value = "Change an avatar of Grey, can only be used once per hour!", inline=False)
-    embed.add_field(name = '=saturnage, =sa', value = "Convert your Earth-age into gorgeous Saturn-age", inline=False)
-    embed.add_field(name = '=earthage, =ea', value = "Convert your Saturn-age into Earth-age", inline=False)
-    embed.add_field(name = '=emojitotext [emoji] [text], =etext, =et', value = "Convert your text to emoji!", inline=False)
-    await ctx.send(embed = embed)
+async def help(ctx): 
+    await ctx.send(embed = embeds.help_regular)
+    await ctx.send(embed = embeds.help_fun)
 
 @bot.command(pass_context = True , aliases = ['Invite'])
 async def invite(ctx):
@@ -276,48 +318,8 @@ async def vote(ctx, *args):
         embed.add_field(name = 'Vote', value = "Please create a proper vote!\nThere can be up to 8 items.")
         await ctx.send(embed = embed)
 
-@bot.command(pass_context = True, aliases = ['sa'])
-async def saturnage(ctx, age):
-    try:
-        age = int(age)
-        await ctx.send (embed = embed_text("Your age in Saturnian is %.2f" % (float(age)/29.4577)))
-    except :
-        await ctx.send(embed = embed_text("Please input proper age!"))
+# On-message events
 
-@bot.command(pass_context = True, aliases = ['ea'])
-async def earthage(ctx, age):
-    try:
-        age = int(age)
-        await ctx.send (embed = embed_text("Your age in Earth is %d" % math.floor(int(float(age)*29.4577))))
-    except :
-        await ctx.send(embed = embed_text("Please input proper age!"))
-
-@bot.command(pass_context = True, aliases = ['ChangeAvatar', 'ca'])
-async def changeavatar(ctx):
-    global AVATAR_TIME_PRIOR
-    if (time.time() - AVATAR_TIME_PRIOR) < 300 :
-        await ctx.send (embed = embed_text("I can't change my avatar that quick!"))
-        return
-
-    global avatarFlag
-    AVATAR_TIME_PRIOR = time.time()
-    with open('./images/grey1.png', 'rb') as f :
-        image1 = f.read()
-    with open('./images/grey2.png', 'rb') as f :
-        image2 = f.read()
-    
-    if avatarFlag :
-        avatarFlag = not avatarFlag
-        await bot.user.edit(avatar = image2)
-        await ctx.send (embed = embed_text("Changed avatar to Hunch gray's Grey-kun."))
-        return
-    else :
-        avatarFlag = not avatarFlag
-        await bot.user.edit(avatar = image1)
-        await ctx.send (embed = embed_text("Changed avatar to Ham's Grey-chan."))
-        return
-
-#On-message events
 @bot.event
 async def on_message(message):
     #pretreatment
@@ -391,11 +393,14 @@ async def on_message(message):
         else :
             await message.add_reaction(GREYMOJI['GreyPat'])
 
+# On-ready events
 @bot.event
 async def on_ready():
     print('logging in')
     print('connection was succesful')
     await bot.change_presence(status=discord.Status.online, activity=None)
+    await initiate_help()
     hellonira.start()
+    bot.remove_command('initiate_help')
 
 bot.run(os.environ['token'])
