@@ -115,8 +115,8 @@ def embed_text(text) :
 async def initiate_help() :
     BOT_COMMANDS_CHANNEL = 742548177462231120
     channel = bot.get_channel(BOT_COMMANDS_CHANNEL)
-    HELP_REGULAR_ID = 800569960644214847
-    HELP_FUN_ID = 800589931373527072
+    HELP_REGULAR_ID = 800923698214731782
+    HELP_FUN_ID = 800923698743345192
     regular_msg = await channel.fetch_message(HELP_REGULAR_ID)
     await regular_msg.edit(embed = embeds.help_regular)
     fun_msg = await channel.fetch_message(HELP_FUN_ID)
