@@ -15,3 +15,4 @@ help_fun.add_field(name="Grey patpat", value="`greypatpat`\naliases : `gpp`, `gp
 help_fun.add_field(name="Change the avatar of Grey", value="`changeavatar`\naliases : `ca`\nChange an avatar of Grey, can only be used once per five minutes.", inline = False)
 help_fun.add_field(name="Convert emoji to text", value="`emojitext emoji text`\naliases : `etext`, `et`\nConvert your text to emoji! text length must be shorter than 9 characters.", inline = False)
 help_fun.add_field(name="Age converters", value="`saturnage age`\naliases:`sa`\nConvert your Earth-age into gorgeous Saturn-age\n`earthage age`\naliases : `ea`\nConvert your Saturn-age into Earth-age", inline = False)
+help_fun.add_field(name="Q&A", value="`Q_A`\naliases : `QA`, `qa`, `QnA`, `qna`\nGet a random ZUTOMAYO Q&A from various sources.", inline = False)

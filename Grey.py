@@ -3,7 +3,7 @@
 import os #to get token
 import json #json file parse
 import random #used in many games and features
-from features import minesweeper, emojitext, embeds
+from features import minesweeper, emojitext, embeds, QA
 import time
 import math
 import re
@@ -259,7 +259,21 @@ async def uwu(ctx):
 async def greypatpat(ctx):
     await ctx.send(GREYMOJI['GreyPat'])
     await ctx.message.delete()
-    
+
+@bot.command(pass_context = True , aliases=['QA', 'qa', 'QnA', 'qna'])
+async def Q_A(ctx):
+    Q = ""
+    A = ""
+    Ref = ""
+    Q, A, Ref = QA.return_random_QA()
+    Ref = "Reference : " + Ref
+    embed_QA = discord.Embed(title = "Random Q&A", color = discord.Color.greyple())
+    embed_QA.set_author(name = bot.user, icon_url = bot.user.avatar_url)
+    embed_QA.add_field(name = 'Question', value = Q, inline = False)
+    embed_QA.add_field(name = 'Answer', value = A, inline = False)
+    embed_QA.set_footer(text= Ref)
+    await ctx.send(embed = embed_QA)
+
 # Regular commands
 
 @bot.command(pass_context = True , aliases = ['Help', 'h'])
