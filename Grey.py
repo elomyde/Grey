@@ -267,12 +267,19 @@ async def Q_A(ctx):
     Ref = ""
     Q, A, Ref = QA.return_random_QA()
     Ref = "Reference : " + Ref
-    embed_QA = discord.Embed(title = "Random Q&A", color = discord.Color.greyple())
-    embed_QA.set_author(name = bot.user, icon_url = bot.user.avatar_url)
-    embed_QA.add_field(name = 'Question', value = Q, inline = False)
-    embed_QA.add_field(name = 'Answer', value = A, inline = False)
-    embed_QA.set_footer(text= Ref)
-    await ctx.send(embed = embed_QA)
+    embed_Q = discord.Embed(title = "Random Q&A", color = discord.Color.greyple())
+    embed_Q.set_author(name = bot.user, icon_url = bot.user.avatar_url)
+    embed_Q.add_field(name = 'Question', value = Q, inline = False)
+    embed_Q.set_footer(text= Ref)
+
+    embed_A = discord.Embed(title = "Random Q&A", color = discord.Color.greyple())
+    embed_A.set_author(name = bot.user, icon_url = bot.user.avatar_url)
+    embed_A.add_field(name = 'Answer', value = A, inline = False)
+    embed_A.set_footer(text= Ref)
+    
+    await ctx.send(embed = embed_Q)
+    await asyncio.sleep(15)
+    await ctx.send(embed = embed_A)
 
 # Regular commands
 
