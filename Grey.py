@@ -1,4 +1,4 @@
-#3537984 : perm int
+#67632192 : perm int
 #Basics
 import os #to get token
 import json #json file parse
@@ -309,7 +309,7 @@ async def help(ctx):
 @bot.command(pass_context = True , aliases = ['Invite'])
 async def invite(ctx):
     embed = discord.Embed(color = discord.Color.greyple())
-    embed.add_field(name = 'Invitation', value = "Click [Here](https://discord.com/oauth2/authorize?client_id=790571552345030686&scope=bot&permissions=3537984) to make Grey join your server!")
+    embed.add_field(name = 'Invitation', value = "Click [Here](https://discord.com/oauth2/authorize/?permissions=67632192&scope=bot&client_id=790571552345030686) to make Grey join your server!")
     await ctx.send(embed = embed)
 
 @bot.command(pass_context = True , aliases = ['Vote', 'v'])
