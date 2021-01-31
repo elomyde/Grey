@@ -146,6 +146,17 @@ async def ping(ctx):
 
 # Fun commands
 
+@bot.command(pass_context = True, aliases = ['sg'])
+async def saygrey(ctx, *args) :
+    id_num = ctx.message.author.id
+    texts = ' '.join(args)
+    await ctx.message.delete()
+    if id_num == 394724520872771585 :
+        channel = bot.get_channel(603246092402032673)
+        async with channel.typing() :
+            await asyncio.sleep(len(texts) * 0.05)
+        await channel.send(texts)
+
 @bot.command(pass_context = True , aliases = ['mine', 'm'])
 async def mines(ctx, mapsizeX, mapsizeY, bombnum) :
     NUMBERS = [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:"]
