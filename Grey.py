@@ -46,6 +46,7 @@ NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
 SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is a cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
 REPLY_NIRA = ["<a:E_greydontworryme:789817643297013770>", "<:greysmile:742805250469265409>", "<:E_greysmile:796762990794899467>", "<:E_greyUwU:790553515663163413>"]
 CALL_NIRA = "<@740606402330099752>"
+INTERNAL_HELLONIRA_FLAG = False
 
 #Discord APIs
 bot = commands.Bot(command_prefix='=')
@@ -127,10 +128,13 @@ async def initiate_help() :
 @tasks.loop(hours = 8)
 async def hellonira() :
     global bot
-    channel = bot.get_channel(603246092402032673) #603246092402032673 #798217844784758894
-    async with channel.typing() :
-        await asyncio.sleep(3)
-    await channel.send(RAND_HELLO[random.randint(0,len(RAND_HELLO)-1)].format(nira = CALL_NIRA))
+    global INTERNAL_HELLONIRA_FLAG
+    if INTERNAL_HELLONIRA_FLAG :
+        channel = bot.get_channel(603246092402032673) #603246092402032673 #798217844784758894
+        async with channel.typing() :
+            await asyncio.sleep(3)
+        await channel.send(RAND_HELLO[random.randint(0,len(RAND_HELLO)-1)].format(nira = CALL_NIRA))
+    INTERNAL_HELLONIRA_FLAG = True
 
 # Test commands
 @bot.command(pass_context = True, aliases = ['hn'])
@@ -147,12 +151,15 @@ async def ping(ctx):
 # Fun commands
 
 @bot.command(pass_context = True, aliases = ['sg'])
-async def saygrey(ctx, *args) :
+async def saygrey(ctx, mode = 'r', *args) :
+    await ctx.message.delete()
     id_num = ctx.message.author.id
     texts = ' '.join(args)
-    await ctx.message.delete()
     if id_num == 394724520872771585 :
-        channel = bot.get_channel(603246092402032673)
+        if mode == 'g' :
+            channel = bot.get_channel(603246092402032673)
+        else :
+            channel = ctx.message.channel
         async with channel.typing() :
             await asyncio.sleep(len(texts) * 0.05)
         await channel.send(texts)
