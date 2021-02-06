@@ -32,11 +32,14 @@ def is_contains_emoji(possibly_emoji):
             elif range_min_4 <= char_code <= range_max_4:
                 ordinary_emoji_flag = True
                 break
+            else :
+                ordinary_emoji_flag = False
+                break
     else:
         ordinary_emoji_flag = False
 
-    mask_normal = re.compile(r'^<[:][a-zA-Z]+[:]\w+>$')
-    mask_moving = re.compile(r'^<a[:][a-zA-Z]+[:]\w+>$')
+    mask_normal = re.compile(r'^<[:]\w+[:]\w+>$')
+    mask_moving = re.compile(r'^<a[:]\w+[:]\w+>$')
    
     if not(re.fullmatch(mask_normal, possibly_emoji) or re.fullmatch(mask_moving, possibly_emoji)) :
         custom_emoji_flag = False
