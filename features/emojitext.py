@@ -13,6 +13,9 @@ def is_contains_emoji(possibly_emoji):
     range_max_3 = 174
     range_min_4 = 8205
     range_max_4 = 12953
+    
+    if "@" in possibly_emoji or "#" in possibly_emoji :
+        return (False, False)
 
     if possibly_emoji:
         for a_char in possibly_emoji:
@@ -31,10 +34,10 @@ def is_contains_emoji(possibly_emoji):
                 break
     else:
         ordinary_emoji_flag = False
-    
-    mask_normal = re.compile(r'^<[:]\w+[:]\w+>$')
-    mask_moving = re.compile(r'^<a[:]\w+[:]\w+>$')
 
+    mask_normal = re.compile(r'^<[:][a-zA-Z]+[:]\w+>$')
+    mask_moving = re.compile(r'^<a[:][a-zA-Z]+[:]\w+>$')
+   
     if not(re.fullmatch(mask_normal, possibly_emoji) or re.fullmatch(mask_moving, possibly_emoji)) :
         custom_emoji_flag = False
     else :
