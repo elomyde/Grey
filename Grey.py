@@ -192,34 +192,38 @@ async def mines(ctx, mapsizeX, mapsizeY, bombnum) :
     context += " "
     await ctx.send(context)
 
-@commands.cooldown(1, 20, commands.BucketType.user)
+@commands.cooldown(1, 2, commands.BucketType.user)
 @bot.command(pass_context = True, aliases = ['etext', 'et'])
 async def emojitotext(ctx, emo, text) :
-    mask_normal = re.compile(r'^<[:]\w+[:]\w+>$')
-    mask_moving = re.compile(r'^<a[:]\w+[:]\w+>$')
-    if not(re.fullmatch(mask_normal, emo) or re.fullmatch(mask_moving, emo)) :
-        await ctx.send(embed = embed_text("Please input proper emoji!"))
-        return
-    
-    emo_id = emo.split(':')[-1][:-1]
-
-    try :
-        x = bot.get_emoji(int(emo_id))
-    except :
-        await ctx.send(embed = embed_text("Please input proper emoji!"))
-        return
-    
-    if x == None :
-        await ctx.send(embed = embed_text("Please input proper emoji!"))
+    ordinary_flag, custom_flag = emojitext.is_contains_emoji(emo)
+    if (ordinary_flag or custom_flag) :
+        pass
+    else :
+        await ctx.send(embed = embed_text("This is not an emoji!"))
         return
 
     if len(text) > 10 :
         await ctx.send(embed = embed_text("This text is too long to convert"))
         return
+    
+    if ordinary_flag :
+        pass
+    elif custom_flag :
+        custom_emo_id = emo.split(':')[-1][:-1]
+        try :
+            custom_emoji = bot.get_emoji(int(custom_emo_id))
+        except :
+            await ctx.send(embed = embed_text("Please input proper emoji!"))
+            return
+
+        if custom_emoji == None :
+            await ctx.send(embed = embed_text("Please input proper emoji!"))
+            return
+
     conv_text = emojitext.emojiconverter(text, emo, "<:blank:788433633655783434>")
 
-    for x in conv_text :
-        await ctx.send(x)
+    for lines in conv_text :
+        await ctx.send(lines)
 
 @emojitotext.error
 async def info_error(ctx, error) :

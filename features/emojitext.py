@@ -1,6 +1,51 @@
 import numpy
+import re
+
+def is_contains_emoji(possibly_emoji):
+    ordinary_emoji_flag = False
+    custom_emoji_flag = False
+
+    range_min = ord(u'\U0001F300') # 127744
+    range_max = ord(u'\U0001FAD6') # 129750
+    range_min_2 = 126980
+    range_max_2 = 127569
+    range_min_3 = 169
+    range_max_3 = 174
+    range_min_4 = 8205
+    range_max_4 = 12953
+
+    if possibly_emoji:
+        for a_char in possibly_emoji:
+            char_code = ord(a_char)
+            if range_min <= char_code <= range_max:
+                ordinary_emoji_flag = True
+                break
+            elif range_min_2 <= char_code <= range_max_2:
+                ordinary_emoji_flag = True
+                break
+            elif range_min_3 <= char_code <= range_max_3:
+                ordinary_emoji_flag = True
+                break
+            elif range_min_4 <= char_code <= range_max_4:
+                ordinary_emoji_flag = True
+                break
+    else:
+        ordinary_emoji_flag = False
+    
+    mask_normal = re.compile(r'^<[:]\w+[:]\w+>$')
+    mask_moving = re.compile(r'^<a[:]\w+[:]\w+>$')
+
+    if not(re.fullmatch(mask_normal, possibly_emoji) or re.fullmatch(mask_moving, possibly_emoji)) :
+        custom_emoji_flag = False
+    else :
+        custom_emoji_flag = True
+
+    return (ordinary_emoji_flag, custom_emoji_flag)
+
+
 
 def emojiconverter(text, emoji, blank) :
+    DISCORD_LENGTH_LIMIT = 2000
     converted_text = ["","","","",""]
     e = emoji
     b = blank
@@ -44,6 +89,26 @@ def emojiconverter(text, emoji, blank) :
     "+" : [[b,b,b],[b,e,b],[e,e,e],[b,e,b],[b,b,b]],
     "-" : [[b,b,b],[b,b,b],[e,e,e],[b,b,b],[b,b,b]],
     "_" : [[b,b,b],[b,b,b],[b,b,b],[b,b,b],[e,e,e]],
+    "!" : [[b,e,b],[b,e,b],[b,e,b],[b,b,b],[b,e,b]],
+    "#" : [[b,e,b,e,b],[e,e,e,e,e],[b,e,b,e,b],[e,e,e,e,e],[b,e,b,e,b]],
+    "$" : [[b,e,e,e,e],[e,b,e,b,b],[e,e,e,e,b],[b,b,e,b,e],[e,e,e,e,b]],
+    "%" : [[e,b,b,b,e],[b,b,b,e,b],[b,b,e,b,b],[b,e,b,b,b],[e,b,b,b,e]],
+    "^" : [[b,e,b],[e,b,e],[b,b,b],[b,b,b],[b,b,b]],
+    "&" : [[b,e,e,b,b],[e,b,e,b,b],[b,e,b,b,e],[e,b,e,e,b],[b,e,e,b,e]],
+    "*" : [[e,b,b,b,e],[b,e,b,e,b],[e,e,e,e,e],[b,e,b,e,b],[e,b,b,b,e]],
+    "(" : [[b,b,e],[b,e,b],[b,e,b],[b,e,b],[b,b,e]],
+    ")" : [[e,b,b],[b,e,b],[b,e,b],[b,e,b],[e,b,b]],
+    "◇" : [[b,b,e,b,b],[b,e,b,e,b],[e,b,b,b,e],[b,e,b,e,b],[b,b,e,b,b]],
+    "◆" : [[b,b,e,b,b],[b,e,e,e,b],[e,e,e,e,e],[b,e,e,e,b],[b,b,e,b,b]],
+    "□" : [[e,e,e,e,e],[e,b,b,b,e],[e,b,b,b,e],[e,b,b,b,e],[e,e,e,e,e]],
+    "■" : [[e,e,e,e,e],[e,e,e,e,e],[e,e,e,e,e],[e,e,e,e,e],[e,e,e,e,e]],
+    "→" : [[b,b,e,b,b],[b,b,b,e,b],[e,e,e,e,e],[b,b,b,e,b],[b,b,e,b,b]],
+    "←" : [[b,b,e,b,b],[b,e,b,b,b],[e,e,e,e,e],[b,e,b,b,b],[b,b,e,b,b]],
+    "↑" : [[b,b,e,b,b],[b,e,e,e,b],[e,b,e,b,e],[b,b,e,b,b],[b,b,e,b,b]],
+    "↓" : [[b,b,e,b,b],[b,b,e,b,b],[e,b,e,b,e],[b,e,e,e,b],[b,b,e,b,b]],
+    "〓" : [[b,b,b,b,b],[e,e,e,e,e],[b,b,b,b,b],[e,e,e,e,e],[b,b,b,b,b]],
+    "♡" : [[b,e,b,e,b],[e,b,e,b,e],[e,b,b,b,e],[b,e,b,e,b],[b,b,e,b,b]],
+    "♥" : [[b,e,b,e,b],[e,e,e,e,e],[e,e,e,e,e],[b,e,e,e,b],[b,b,e,b,b]]
     }
     padding = [[b],[b],[b],[b],[b]]
     converted_matrix = [[],[],[],[],[]]
