@@ -207,6 +207,7 @@ async def emojitotext(ctx, emo, text) :
         return
     
     if ordinary_flag :
+        emo = emo[0]
         pass
     elif custom_flag :
         custom_emo_id = emo.split(':')[-1][:-1]

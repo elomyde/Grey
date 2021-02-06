@@ -14,11 +14,10 @@ def is_contains_emoji(possibly_emoji):
     range_min_4 = 8205
     range_max_4 = 12953
     
-    if "@" in possibly_emoji or "#" in possibly_emoji :
-        return (False, False)
+    possibly_emoji_ordinary = possibly_emoji[0]
 
-    if possibly_emoji:
-        for a_char in possibly_emoji:
+    if possibly_emoji_ordinary:
+        for a_char in possibly_emoji_ordinary:
             char_code = ord(a_char)
             if range_min <= char_code <= range_max:
                 ordinary_emoji_flag = True
