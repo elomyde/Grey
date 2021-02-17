@@ -179,6 +179,66 @@
             "Question" : "What?",
             "Answer" : "What?",
             "Reference" : "Imawa Imade Chikaiwa Emide : Limited Edition booklet"
-        }
+        },
+        {
+            "Question" : "Q : What guitar do you have?",
+            "Answer" : "A : I have a Yamaha LL16 acoustic guitar. (The current guitar she plays in her Twitter videos)",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q: Why do you use the letter C in Acane instead of K? (The romanji for her name,茜, is Akane)",
+            "Answer" : "A : The letter C has a rounder sound than K.",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : Do you have any tips for playing guitar?",
+            "Answer" : "A : tips... I want to know either, I want to mute well where it needs to be.",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : What was the first CD you bought?",
+            "Answer" : "A : I think it was Kaede Kimura’s album scratch.",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : When did you start to play the guitar?",
+            "Answer" : "A : Around second year of High School.",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : Planning to do a live outside of Tokyo?",
+            "Answer" : "A : Not for now, but I’m thinking about Shikoku.",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : How can I get the courage to act?",
+            "Answer" : "A : I always feel that before regretting no acting, I should at least try first.\nMaybe because of my lack of courage.",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : What kind of job do you think you would do if you weren’t a musician?",
+            "Answer" : "A : Dietician.",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : Do you have any new year goals?",
+            "Answer" : "A : Play the electric guitar live\nTry to post videos where I sing\nOriginal song on Youtube\n10,000 followers\nRelease a CD\nThese are my goals so far.",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : Are there any other instruments you would like to play besides the guitar?",
+            "Answer" : "A : Banjo!",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : Please tell us what made you decide to play the guitar! Also, what made you decide to become a singer?",
+            "Answer" : "A : Actually I wanted to be in a band, and I was told 'you could’ve done it someday!'\nSo I began writing songs and it was very fun.(roughly..) The decisive fact was my groundless confidence! (roughly..)",
+            "Reference" : "ACAne Peing Q&A"
+        },
+        {
+            "Question" : "Q : What made you happy the most this year?",
+            "Answer" : "A : I was complimented for my original song! Also, I was able to make a really",
+            "Reference" : "ACAne Peing Q&A"
+        }        
     ]
 }

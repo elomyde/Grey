@@ -4,6 +4,7 @@ GREY_IMAGE_URL = "https://cdn.discordapp.com/avatars/790571552345030686/b00a86de
 help_regular = discord.Embed(title = "🛠️ Commands", colour=discord.Colour(0xe6e6e6))
 help_regular.set_author(name="Grey", icon_url= GREY_IMAGE_URL)
 help_regular.add_field(name="Prefix", value="Grey uses '=' as a prefix. `ex) =help`", inline = False)
+help_regular.add_field(name="showlive", value="`live`, `Live`, `cover`, `Cover`, `sheet`\nTo see all non-paid lives and ACAne's covers.", inline = False)
 help_regular.add_field(name="Invitation", value="`invite`\nMake a invitation for your server.", inline = False)
 help_regular.add_field(name="Vote", value="`vote item`\n`vote a or b or ...`\naliases : `v`\nCreate a vote!\nYou can create a single Yes-or-no vote\nor a vote with up to eight items.", inline = False)
 

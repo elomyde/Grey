@@ -124,7 +124,6 @@ async def initiate_help() :
     await fun_msg.edit(embed = embeds.help_fun)
 
 # loops
-
 @tasks.loop(hours = 8)
 async def hellonira() :
     global bot
@@ -306,6 +305,12 @@ async def Q_A(ctx):
 
 # Regular commands
 
+@bot.command(pass_context = True, aliases = ['live', 'Live', 'cover', 'Cover', 'sheet'])
+async def showlive(ctx) :
+    embed = discord.Embed(color = discord.Color.greyple())
+    embed.add_field(name = 'Lives and covers', value = "Click [Here](https://docs.google.com/spreadsheets/d/1AuitNGqaUSI8cNeImF8A3ooIoYzatfTfQQgNu_TbZkc/edit?usp=sharing) to see all non-paid lives and ACAne's covers.")
+    await ctx.send(embed = embed)
+
 @bot.command(pass_context = True , aliases = ['Help', 'h'])
 async def help(ctx): 
     await ctx.send(embed = embeds.help_regular)
@@ -361,6 +366,7 @@ async def vote(ctx, *args):
     else :
         embed.add_field(name = 'Vote', value = "Please create a proper vote!\nThere can be up to 8 items.")
         await ctx.send(embed = embed)
+
 
 # On-message events
 
