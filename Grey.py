@@ -300,7 +300,7 @@ async def Q_A(ctx):
     embed_A.set_footer(text= Ref)
     
     await ctx.send(embed = embed_Q)
-    await asyncio.sleep(15)
+    await asyncio.sleep(5)
     await ctx.send(embed = embed_A)
 
 # Regular commands
