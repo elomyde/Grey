@@ -307,9 +307,14 @@ async def Q_A(ctx):
 
 @bot.command(pass_context = True, aliases = ['live', 'Live', 'cover', 'Cover', 'sheet'])
 async def showlive(ctx) :
-    embed = discord.Embed(color = discord.Color.greyple())
-    embed.add_field(name = 'Lives and covers', value = "Click [Here](https://docs.google.com/spreadsheets/d/1AuitNGqaUSI8cNeImF8A3ooIoYzatfTfQQgNu_TbZkc/edit?usp=sharing) to see all non-paid lives and ACAne's covers.")
-    await ctx.send(embed = embed)
+    print(ctx.message.author.roles)
+    VIP = discord.utils.get(ctx.guild.roles, id = 790791220179632128)
+    if VIP in ctx.message.author.roles :
+        embed = discord.Embed(color = discord.Color.greyple())
+        embed.add_field(name = 'Lives and covers', value = "Click [Here](https://docs.google.com/spreadsheets/d/1AuitNGqaUSI8cNeImF8A3ooIoYzatfTfQQgNu_TbZkc/edit?usp=sharing) to see all non-paid lives and ACAne's covers.")
+        await ctx.send(embed = embed)
+    else :
+        return
 
 @bot.command(pass_context = True , aliases = ['Help', 'h'])
 async def help(ctx): 
