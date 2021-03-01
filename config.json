@@ -1,11 +1,10 @@
 {
     "emojis" : {
-        "GreyUwU" : "<:E_greyUwU:790553515663163413>",
-        "GreyStare" : "<:E_greystare:789817320779546645>",
-        "GreyNod" : "<:E_greynod:789817319760330794>",
-        "GreyGiveMe" : "<:E_greygiveme:789817320204664862>",
-        "GreyDontWorryMe" : "<a:E_greydontworryme:789817643297013770>",
-        "GreyPat" : "<a:E_greypat:793768136859713546>"
+        "greyRun" : "<:greyRun:814129212533375036>",
+        "greyUwU" : "<:greyUwU:814129212301901824>",
+        "greyEyesmile" : "<:greyEyesmile:814129212213952583>",
+        "greyNod" : "<:greyNod:814129212197044224>",
+        "greyPat" : "<a:greyPat:815852063552176138>"
     },
     "prohibitlists" : {
         "ServerofGreyAnnouncements" : "791549841909350420",

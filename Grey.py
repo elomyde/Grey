@@ -29,7 +29,7 @@ with open("./config.json", "r") as f:
     CONFIG = json.load(f)
 
 RAND_HELLO = list()
-with open("./random_hello.txt", "r", encoding = "utf-8") as f2 :
+with open("./fun/random_hello.txt", "r", encoding = "utf-8") as f2 :
     while True :
         line = f2.readline().rstrip("\n")
         if not line :
@@ -44,7 +44,6 @@ AVATAR_TIME_PRIOR = 0
 #Constants
 NoU = ["No U", "I am alive", "Grey is alive", "I didn't die", "You are a liar"]
 SOLDIER_CATMAID = ["But Soldier, you are a cat maid!", "I think soldier is a cat maid", "Soldier is a cat maid", "Soldier catmaid confirmed"]
-REPLY_NIRA = ["<a:E_greydontworryme:789817643297013770>", "<:greysmile:742805250469265409>", "<:E_greysmile:796762990794899467>", "<:E_greyUwU:790553515663163413>"]
 CALL_NIRA = "<@740606402330099752>"
 INTERNAL_HELLONIRA_FLAG = False
 
@@ -220,7 +219,7 @@ async def emojitotext(ctx, emo, text) :
             await ctx.send(embed = embed_text("Please input proper emoji!"))
             return
 
-    conv_text = emojitext.emojiconverter(text, emo, "<:blank:788433633655783434>")
+    conv_text = emojitext.emojiconverter(text, emo, "<:blank:815425615770419200>")
 
     for lines in conv_text :
         await ctx.send(lines)
@@ -274,7 +273,7 @@ async def changeavatar(ctx):
 
 @bot.command(pass_context = True , aliases=['UwU'])
 async def uwu(ctx):
-    await ctx.send("<:E_greyUwU:790553515663163413>")
+    await ctx.send(GREYMOJI['greyUwU'])
     await ctx.message.delete()
     
 @bot.command(pass_context = True , aliases=['greypat', 'gpp', 'gp', 'GPP', 'GP'])
@@ -394,11 +393,11 @@ async def on_message(message):
     
     #Reply to @Grey
     if bot.user.mentioned_in(message) :
-        await message.add_reaction(GREYMOJI['GreyNod'])
+        await message.add_reaction(GREYMOJI['greyNod'])
         if author == 740606402330099752 : #only for Nira-chan
             async with message.channel.typing() :
                 await asyncio.sleep(1.5)
-            await message.channel.send(REPLY_NIRA[random.randint(0,len(REPLY_NIRA))-1])
+            await message.channel.send(GREYMOJI_LIST[random.randint(0,len(GREYMOJI_LIST))-1])
         return
     else :
         pass
@@ -429,7 +428,7 @@ async def on_message(message):
     #soldier catmaid meme
     if author == 314358105205112834 :
         if (("no" in content or "not" in content) and ("maid" in content or "cat" in content)) :
-            await message.channel.send(SOLDIER_CATMAID[random.randint(0,len(SOLDIER_CATMAID))-1]+ GREYMOJI['GreyNod'])
+            await message.channel.send(SOLDIER_CATMAID[random.randint(0,len(SOLDIER_CATMAID))-1]+GREYMOJI['greyNod'])
 
     #Grey patpat feature
     if "patpat" in content or "greypat" in content :
@@ -439,14 +438,14 @@ async def on_message(message):
                 #Patpat role check
                 if role.id == 765347466169024512 :
                     try:
-                        await message.add_reaction(GREYMOJI['GreyPat'])
+                        await message.add_reaction(GREYMOJI['greyPat'])
                     except:
                         pass
                     break
                 else :
                     pass
         else :
-            await message.add_reaction(GREYMOJI['GreyPat'])
+            await message.add_reaction(GREYMOJI['greyPat'])
 
 # On-ready events
 @bot.event
